@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lojas Encanto | Enxovais em 100% Algodão Brasileiro</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <!-- Tailwind Configuration using Brand Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            light: '#FAF6F0',
+                            sand: '#F1E8DC',
+                            cyan: '#00C8E2',
+                            cyanVib: '#0DCAE0',
+                            magenta: '#B23A62',
+                            dark: '#2E2A27',
+                            teal: '#0E5A66',
+                            pink: '#F5DCE3'
+                        }
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                        fraunces: ['Fraunces', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #FAF6F0;
+            color: #2E2A27;
+        }
+        
+        /* Top Bar Rotation Animation */
+        .topbar-container {
+            overflow: hidden;
+            position: relative;
+            height: 36px;
+        }
+        .topbar-track {
+            display: flex;
+            flex-direction: column;
+            animation: slide-up 9s infinite;
+        }
+        .topbar-msg {
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        @keyframes slide-up {
+            0%, 28% { transform: translateY(0); }
+            33%, 61% { transform: translateY(-36px); }
+            66%, 95% { transform: translateY(-72px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* Scrolling Banner Animation */
+        .scrolling-wrapper {
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+        }
+        .scrolling-content {
+            display: inline-block;
+            animation: scroll-left 25s linear infinite;
+        }
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Hide scrollbar */
+        .hide-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Swiper Customization */
+        .swiper-pagination-bullet {
+            background-color: #FAF6F0 !important;
+            opacity: 0.6;
+        }
+        .swiper-pagination-bullet-active {
+            background-color: #B23A62 !important;
+            opacity: 1;
+        }
+        .swiper-button-next, .swiper-button-prev {
+            color: #FAF6F0 !important;
+            transform: scale(0.6);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .swiper:hover .swiper-button-next, .swiper:hover .swiper-button-prev {
+            opacity: 0.8;
+        }
+
+        /* Button Hover */
+        .btn-hover {
+            transition: all 0.3s ease;
+        }
+        .btn-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(178, 58, 98, 0.4);
+        }
+    </style>
+</head>
+<body class="font-poppins antialiased pb-16 md:pb-0">
+
+    <!-- 1. Top Bar / Announcement -->
+    <div class="bg-brand-teal text-white text-center text-xs md:text-sm font-medium tracking-wide topbar-container">
+        <div class="topbar-track">
+            <div class="topbar-msg">Frete Grátis - Consulte condições</div>
+            <div class="topbar-msg">Teste qualquer produto por 15 noites</div>
+            <div class="topbar-msg">Estampas novas toda semana</div>
+        </div>
+    </div>
+
+    <!-- 2. Header (Menus) -->
+    <header class="bg-brand-light sticky top-0 z-50 shadow-sm border-b border-brand-sand">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                
+                <!-- Mobile Menu Icon -->
+                <div class="flex items-center md:hidden">
+                    <button class="text-brand-dark p-2 hover:text-brand-magenta">
+                        <i class="ph ph-list text-2xl"></i>
+                    </button>
+                </div>
+
+                <!-- Logo -->
+                <a href="#" class="flex-shrink-0 flex items-center cursor-pointer">
+                    <img src="https://www.lojasencanto.com.br/uploads/lojasencanto/design/Logo15875864471251586443.webp" 
+                         alt="Lojas Encanto" 
+                         class="h-10 md:h-12 w-auto object-contain"
+                         onerror="this.onerror=null; this.src='https://placehold.co/180x50/FAF6F0/00C8E2?text=Lojas+Encanto';">
+                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden lg:flex space-x-6 items-center flex-grow justify-center">
+                    <a href="#" class="text-brand-dark text-sm font-medium hover:text-brand-magenta transition">A Lojas Encanto</a>
+                    <a href="#" class="text-brand-dark text-sm font-medium hover:text-brand-magenta transition">Jogos de Cama</a>
+                    <a href="#" class="text-brand-dark text-sm font-medium hover:text-brand-magenta transition">Colchas</a>
+                    <a href="#" class="text-brand-dark text-sm font-medium hover:text-brand-magenta transition">Avulsos</a>
+                    <a href="#" class="text-brand-magenta text-sm font-semibold hover:text-brand-teal transition">Outlet</a>
+                </nav>
+
+                <!-- Icons Right -->
+                <div class="flex items-center space-x-4">
+                    <div class="hidden md:flex items-center relative">
+                        <input type="text" placeholder="Pesquisar..." class="bg-white border border-brand-sand rounded-full py-1.5 px-4 text-sm focus:outline-none focus:border-brand-cyan w-48 text-brand-dark">
+                        <i class="ph ph-magnifying-glass absolute right-3 text-brand-dark"></i>
+                    </div>
+                    <button class="text-brand-dark hover:text-brand-magenta transition hidden md:block">
+                        <i class="ph ph-user text-2xl"></i>
+                    </button>
+                    <button class="text-brand-dark hover:text-brand-magenta transition relative group">
+                        <i class="ph ph-shopping-bag text-2xl group-hover:scale-110 transition-transform"></i>
+                        <span class="absolute -top-1 -right-1 bg-brand-magenta text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-white">3</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 3. Hero Carousel (16:9 Banners) -->
+    <section class="w-full relative bg-brand-sand">
+        <div class="swiper heroSwiper aspect-[16/10] md:aspect-[21/9] w-full">
+            <div class="swiper-wrapper">
+                <!-- Slide 1 -->
+                <div class="swiper-slide relative">
+                    <a href="#" class="block w-full h-full">
+                        <img src="https://i.imgur.com/wEbICmQ.jpg" alt="Banner 1" class="w-full h-full object-cover">
+                    </a>
+                </div>
+                <!-- Slide 2 -->
+                <div class="swiper-slide relative">
+                    <a href="#" class="block w-full h-full">
+                        <img src="https://i.imgur.com/o2xRaCN.jpg" alt="Banner 2" class="w-full h-full object-cover">
+                    </a>
+                </div>
+                <!-- Slide 3 -->
+                <div class="swiper-slide relative">
+                    <a href="#" class="block w-full h-full">
+                        <img src="https://i.imgur.com/XBQdfZJ.jpg" alt="Banner 3" class="w-full h-full object-cover">
+                    </a>
+                </div>
+            </div>
+            <!-- Pagination & Navigation -->
+            <div class="swiper-pagination mb-2"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </section>
+
+    <!-- 4. 6 Category Menus (Pill Buttons) -->
+    <section class="py-6 md:py-8 bg-brand-light border-b border-brand-sand">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex overflow-x-auto gap-3 md:gap-4 md:justify-center pb-2 hide-scroll snap-x">
+                
+                <!-- 1. Casal & Queen -->
+                <a href="#" class="flex-shrink-0 flex items-center gap-2.5 bg-white border border-brand-sand rounded-full pl-2 pr-5 py-2 shadow-sm hover:border-[#0DCAE0] hover:shadow-md transition-all duration-300 snap-start group">
+                    <span class="w-8 h-8 rounded-full bg-[#0DCAE0]/15 text-[#0DCAE0] flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i class="ph-fill ph-bed text-lg"></i>
+                    </span>
+                    <span class="text-xs md:text-sm font-semibold text-brand-dark group-hover:text-brand-teal transition-colors">Casal & Queen</span>
+                </a>
+                
+                <!-- 2. Colchas -->
+                <a href="#" class="flex-shrink-0 flex items-center gap-2.5 bg-white border border-brand-sand rounded-full pl-2 pr-5 py-2 shadow-sm hover:border-[#0DCAE0] hover:shadow-md transition-all duration-300 snap-start group">
+                    <span class="w-8 h-8 rounded-full bg-[#0DCAE0]/15 text-[#0DCAE0] flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i class="ph-fill ph-squares-four text-lg"></i>
+                    </span>
+                    <span class="text-xs md:text-sm font-semibold text-brand-dark group-hover:text-brand-teal transition-colors">Colchas</span>
+                </a>
+                
+                <!-- 3. Avulsos -->
+                <a href="#" class="flex-shrink-0 flex items-center gap-2.5 bg-white border border-brand-sand rounded-full pl-2 pr-5 py-2 shadow-sm hover:border-[#0DCAE0] hover:shadow-md transition-all duration-300 snap-start group">
+                    <span class="w-8 h-8 rounded-full bg-[#0DCAE0]/15 text-[#0DCAE0] flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i class="ph-fill ph-stack text-lg"></i>
+                    </span>
+                    <span class="text-xs md:text-sm font-semibold text-brand-dark group-hover:text-brand-teal transition-colors">Avulsos</span>
+                </a>
+                
+                <!-- 4. Encanto Top -->
+                <a href="#" class="flex-shrink-0 flex items-center gap-2.5 bg-white border border-brand-sand rounded-full pl-2 pr-5 py-2 shadow-sm hover:border-[#0DCAE0] hover:shadow-md transition-all duration-300 snap-start group">
+                    <span class="w-8 h-8 rounded-full bg-[#0DCAE0]/15 text-[#0DCAE0] flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i class="ph-fill ph-crown text-lg"></i>
+                    </span>
+                    <span class="text-xs md:text-sm font-semibold text-brand-dark group-hover:text-brand-teal transition-colors">Encanto Top</span>
+                </a>
+                
+                <!-- 5. Lançamentos -->
+                <a href="#" class="flex-shrink-0 flex items-center gap-2.5 bg-white border border-brand-sand rounded-full pl-2 pr-5 py-2 shadow-sm hover:border-[#0DCAE0] hover:shadow-md transition-all duration-300 snap-start group">
+                    <span class="w-8 h-8 rounded-full bg-[#0DCAE0]/15 text-[#0DCAE0] flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i class="ph-fill ph-rocket-launch text-lg"></i>
+                    </span>
+                    <span class="text-xs md:text-sm font-semibold text-brand-dark group-hover:text-brand-teal transition-colors">Lançamentos</span>
+                </a>
+                
+                <!-- 6. Kits & Combos -->
+                <a href="#" class="flex-shrink-0 flex items-center gap-2.5 bg-white border border-brand-sand rounded-full pl-2 pr-5 py-2 shadow-sm hover:border-[#0DCAE0] hover:shadow-md transition-all duration-300 snap-start group">
+                    <span class="w-8 h-8 rounded-full bg-[#0DCAE0]/15 text-[#0DCAE0] flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i class="ph-fill ph-package text-lg"></i>
+                    </span>
+                    <span class="text-xs md:text-sm font-semibold text-brand-dark group-hover:text-brand-teal transition-colors">Kits & Combos</span>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. 3 Produtos (Vitrine Principal - Subiu para logo após as categorias) -->
+    <section class="py-12 md:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10">
+            <span class="text-[11px] md:text-xs font-semibold tracking-[0.2em] uppercase text-brand-teal mb-1.5 block">Edições Limitadas • 100% Algodão Brasileiro</span>
+            <h2 class="font-fraunces text-3xl md:text-4xl font-bold text-brand-dark">Os Campeões de Vendas</h2>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+            
+            <!-- Product 1 -->
+            <div class="bg-white rounded-xl p-4 border border-brand-sand shadow-sm hover:shadow-lg transition duration-300 relative group flex flex-col h-full">
+                <div class="absolute top-5 left-5 z-10 flex flex-col gap-1.5">
+                    <span class="bg-brand-magenta text-white text-[10px] font-bold px-2.5 py-1 rounded uppercase tracking-wider shadow-sm">-30% OFF</span>
+                    <span class="bg-brand-dark text-brand-light text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider"><i class="ph-fill ph-plant"></i> 100% Algodão ABR</span>
+                </div>
+                <a href="#" class="aspect-[4/5] bg-brand-light rounded-lg overflow-hidden mb-4 relative block">
+                    <img src="https://www.lojasencanto.com.br/uploads/lojasencanto/produtos_imagens/ChatGPT-Image-11-de-jun17898359821981324980.png" 
+                         alt="Kit Cobre Leito casal 250 fios" 
+                         class="w-full h-full object-cover transition duration-500 group-hover:scale-105"
+                         onerror="this.onerror=null; this.src='https://placehold.co/600x750/FAF6F0/B23A62?text=Kit+Cobre+Leito+250+Fios';">
+                </a>
+                <div class="flex-grow flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-1 mb-2 text-amber-500 text-[10px]">
+                            <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                            <span class="text-gray-400 ml-1 font-medium">(142)</span>
+                        </div>
+                        <h3 class="text-sm font-semibold text-brand-dark mb-2 leading-snug line-clamp-2"><a href="#" class="hover:text-brand-magenta transition">Kit Cobre Leito Casal 250 Fios Toque Acetinado</a></h3>
+                    </div>
+                    <div class="mt-2">
+                        <div class="flex items-baseline gap-2 mb-1">
+                            <span class="text-xs text-gray-400 line-through">R$ 432,00</span>
+                            <span class="text-xl font-bold text-brand-magenta">R$ 302,40</span>
+                        </div>
+                        <div class="text-[11px] text-brand-teal font-medium mb-4">ou 5x de <span class="font-bold text-brand-magenta">R$ 60,48</span> sem juros</div>
+                        <button class="w-full bg-brand-dark text-white font-semibold py-3 rounded-lg hover:bg-brand-magenta transition-all duration-300 shadow-md text-sm tracking-wide">ADICIONAR AO CARRINHO</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="bg-white rounded-xl p-4 border border-brand-sand shadow-sm hover:shadow-lg transition duration-300 relative group flex flex-col h-full">
+                <div class="absolute top-5 left-5 z-10 flex flex-col gap-1.5">
+                    <span class="bg-brand-teal text-white text-[10px] font-bold px-2.5 py-1 rounded uppercase tracking-wider shadow-sm">🔥 Mais Vendido</span>
+                    <span class="bg-brand-dark text-brand-light text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider"><i class="ph-fill ph-plant"></i> 100% Algodão ABR</span>
+                </div>
+                <a href="#" class="aspect-[4/5] bg-brand-light rounded-lg overflow-hidden mb-4 relative block">
+                    <img src="https://www.lojasencanto.com.br/uploads/lojasencanto/produtos_imagens/conjunto-de-cama-estampado-76991703852922970811975.jpg" 
+                         alt="Jogo de Cama Casal 200 Fios ENCANTO" 
+                         class="w-full h-full object-cover transition duration-500 group-hover:scale-105"
+                         onerror="this.onerror=null; this.src='https://placehold.co/600x750/FAF6F0/0E5A66?text=Jogo+Casal+200+Fios';">
+                </a>
+                <div class="flex-grow flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-1 mb-2 text-amber-500 text-[10px]">
+                            <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                            <span class="text-gray-400 ml-1 font-medium">(98)</span>
+                        </div>
+                        <h3 class="text-sm font-semibold text-brand-dark mb-2 leading-snug line-clamp-2"><a href="#" class="hover:text-brand-magenta transition">Jogo de Cama Casal 200 Fios ENCANTO Estampa Autoral</a></h3>
+                    </div>
+                    <div class="mt-2">
+                        <div class="flex items-baseline gap-2 mb-1">
+                            <span class="text-xs text-gray-400 line-through">R$ 276,00</span>
+                            <span class="text-xl font-bold text-brand-magenta">R$ 193,40</span>
+                        </div>
+                        <div class="text-[11px] text-brand-teal font-medium mb-4">ou 5x de <span class="font-bold text-brand-magenta">R$ 38,68</span> sem juros</div>
+                        <button class="w-full bg-brand-dark text-white font-semibold py-3 rounded-lg hover:bg-brand-magenta transition-all duration-300 shadow-md text-sm tracking-wide">ADICIONAR AO CARRINHO</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="bg-white rounded-xl p-4 border border-brand-sand shadow-sm hover:shadow-lg transition duration-300 relative group flex flex-col h-full">
+                <div class="absolute top-5 left-5 z-10 flex flex-col gap-1.5">
+                    <span class="bg-brand-pink text-brand-magenta border border-brand-magenta/30 text-[10px] font-bold px-2.5 py-1 rounded uppercase tracking-wider shadow-sm">⚡ Lote Limitado</span>
+                    <span class="bg-brand-dark text-brand-light text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider"><i class="ph-fill ph-plant"></i> 100% Algodão ABR</span>
+                </div>
+                <a href="#" class="aspect-[4/5] bg-brand-light rounded-lg overflow-hidden mb-4 relative block">
+                    <img src="https://www.lojasencanto.com.br/uploads/lojasencanto/produtos_imagens/conjunto-de-cama-estampado-781617104269052142809993.jpg" 
+                         alt="Jogo de Cama Casal 180 fios ENCANTO" 
+                         class="w-full h-full object-cover transition duration-500 group-hover:scale-105"
+                         onerror="this.onerror=null; this.src='https://placehold.co/600x750/FAF6F0/B23A62?text=Jogo+Casal+180+Fios';">
+                </a>
+                <div class="flex-grow flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-1 mb-2 text-amber-500 text-[10px]">
+                            <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                            <span class="text-gray-400 ml-1 font-medium">(215)</span>
+                        </div>
+                        <h3 class="text-sm font-semibold text-brand-dark mb-2 leading-snug line-clamp-2"><a href="#" class="hover:text-brand-magenta transition">Jogo de Cama Casal 180 Fios ENCANTO Conforto Térmico</a></h3>
+                    </div>
+                    <div class="mt-2">
+                        <div class="flex items-baseline gap-2 mb-1">
+                            <span class="text-xs text-gray-400 line-through">R$ 218,00</span>
+                            <span class="text-xl font-bold text-brand-magenta">R$ 152,70</span>
+                        </div>
+                        <div class="text-[11px] text-brand-teal font-medium mb-4">ou 5x de <span class="font-bold text-brand-magenta">R$ 30,54</span> sem juros</div>
+                        <button class="w-full bg-brand-dark text-white font-semibold py-3 rounded-lg hover:bg-brand-magenta transition-all duration-300 shadow-md text-sm tracking-wide">ADICIONAR AO CARRINHO</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="mt-10 text-center">
+            <a href="#" class="inline-block bg-white text-brand-teal border-2 border-brand-teal font-bold px-8 py-3 rounded-lg hover:bg-brand-teal hover:text-white transition shadow-sm hover:shadow-md">VER TODOS OS PRODUTOS</a>
+        </div>
+    </section>
+
+    <!-- 6. Faixa em Movimento (Scrolling Banner - Logo abaixo de Campeões de Vendas) -->
+    <section class="bg-brand-teal text-brand-light py-3 border-y border-brand-teal scrolling-wrapper">
+        <div class="scrolling-content flex items-center gap-10 font-medium tracking-widest text-xs uppercase">
+            <span>✧ ENXOVAIS EM 100% ALGODÃO BRASILEIRO</span>
+            <span>✧ EDIÇÕES LIMITADAS</span>
+            <span>✧ ATÉ 5X SEM JUROS</span>
+            <span>✧ ENXOVAIS EM 100% ALGODÃO BRASILEIRO</span>
+            <span>✧ EDIÇÕES LIMITADAS</span>
+            <span>✧ ATÉ 5X SEM JUROS</span>
+            <span>✧ ENXOVAIS EM 100% ALGODÃO BRASILEIRO</span>
+            <span>✧ EDIÇÕES LIMITADAS</span>
+            <span>✧ ATÉ 5X SEM JUROS</span>
+            <span>✧ ENXOVAIS EM 100% ALGODÃO BRASILEIRO</span>
+            <span>✧ EDIÇÕES LIMITADAS</span>
+            <span>✧ ATÉ 5X SEM JUROS</span>
+        </div>
+    </section>
+
+    <!-- 7. 3 Banners Verticais (3:4) -->
+    <section class="py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-brand-light border-t border-brand-sand">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <a href="#" class="relative block group rounded-2xl overflow-hidden aspect-[3/4] shadow-sm hover:shadow-xl transition duration-500">
+                <img src="https://i.imgur.com/VU9LrV0.jpg" alt="Categoria 1" class="w-full h-full object-cover transition duration-700 group-hover:scale-105">
+            </a>
+
+            <a href="#" class="relative block group rounded-2xl overflow-hidden aspect-[3/4] shadow-sm hover:shadow-xl transition duration-500">
+                <img src="https://i.imgur.com/vy5LmJT.jpg" alt="Categoria 2" class="w-full h-full object-cover transition duration-700 group-hover:scale-105">
+            </a>
+
+            <a href="#" class="relative block group rounded-2xl overflow-hidden aspect-[3/4] shadow-sm hover:shadow-xl transition duration-500">
+                <img src="https://i.imgur.com/mYxJxTr.jpg" alt="Categoria 3" class="w-full h-full object-cover transition duration-700 group-hover:scale-105">
+            </a>
+
+        </div>
+    </section>
+
+    <!-- 8. Rodapé (Footer Limpo) -->
+    <footer class="bg-brand-dark text-brand-sand py-8 pb-24 md:pb-8 border-t border-brand-sand">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="text-xs text-gray-400 text-center md:text-left">
+                    <p>© 2026 Lojas Encanto. Todos os direitos reservados. CNPJ: 00.000.000/0001-00</p>
+                </div>
+                
+                <div class="flex items-center gap-2 flex-wrap justify-center">
+                    <div class="h-7 px-2 bg-white rounded flex items-center justify-center text-[10px] font-bold text-brand-dark gap-1" title="Algodão Brasileiro Responsável">
+                        <i class="ph-fill ph-plant text-brand-teal text-sm"></i> ABR
+                    </div>
+                    <div class="h-7 px-2 bg-white rounded flex items-center justify-center text-[10px] font-bold text-brand-dark gap-1">
+                        <i class="ph-fill ph-lock-key text-gray-700 text-sm"></i> SSL
+                    </div>
+                    <div class="h-7 px-2 bg-[#1434CB] rounded flex items-center justify-center text-[10px] font-bold text-white italic">
+                        VISA
+                    </div>
+                    <div class="h-7 px-2 bg-[#EB001B] rounded flex items-center justify-center text-[10px] font-bold text-white relative">
+                        <div class="w-2.5 h-2.5 rounded-full bg-[#F79E1B] absolute right-1.5 opacity-80 mix-blend-screen"></div>
+                        Master
+                    </div>
+                    <div class="h-7 px-2 bg-[#32BCAD] rounded flex items-center justify-center text-[10px] font-bold text-white">
+                        <i class="ph-bold ph-intersect text-xs mr-0.5"></i> pix
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Fixed Bottom Mobile Navigation (Betterlife style) -->
+    <div class="md:hidden fixed bottom-0 left-0 w-full bg-brand-light/95 backdrop-blur-md border-t border-brand-sand flex justify-around items-center py-2 z-50 px-2 shadow-[0_-2px_10px_rgba(46,42,39,0.06)]">
+        <a href="#" class="flex flex-col items-center text-brand-magenta">
+            <i class="ph-fill ph-house text-2xl"></i>
+            <span class="text-[10px] font-medium mt-0.5">Home</span>
+        </a>
+        <a href="#" class="flex flex-col items-center text-brand-dark/60 hover:text-brand-dark">
+            <i class="ph ph-magnifying-glass text-2xl"></i>
+            <span class="text-[10px] font-medium mt-0.5">Pesquisar</span>
+        </a>
+        <a href="#" class="flex flex-col items-center text-brand-dark/60 hover:text-brand-dark">
+            <i class="ph ph-user text-2xl"></i>
+            <span class="text-[10px] font-medium mt-0.5">Conta</span>
+        </a>
+        <a href="#" class="flex flex-col items-center text-brand-dark/60 hover:text-brand-dark relative">
+            <i class="ph ph-shopping-bag text-2xl"></i>
+            <span class="absolute -top-1 -right-1 bg-brand-magenta text-white text-[9px] font-bold px-1.5 rounded-full border border-white">3</span>
+            <span class="text-[10px] font-medium mt-0.5">Carrinho</span>
+        </a>
+    </div>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Swiper Hero Carousel
+            const swiper = new Swiper('.heroSwiper', {
+                loop: true,
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+            });
+        });
+    </script>
+</body>
+</html>
