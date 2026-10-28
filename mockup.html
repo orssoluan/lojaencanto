@@ -100,6 +100,14 @@
         }
 
         /* Swiper Customization */
+        .heroSwiper {
+            max-height: calc(100vh - 116px);
+            max-height: calc(100dvh - 116px);
+        }
+        .heroSwiper .swiper-slide {
+            height: 100%;
+        }
+
         .swiper-pagination-bullet {
             background-color: #FAF6F0 !important;
             opacity: 0.6;
@@ -187,25 +195,25 @@
     </header>
 
     <!-- 3. Hero Carousel (16:9 Banners) -->
-    <section class="w-full relative bg-brand-sand">
-        <div class="swiper heroSwiper aspect-[16/10] md:aspect-[21/9] w-full">
-            <div class="swiper-wrapper">
+    <section class="w-full relative bg-brand-sand overflow-hidden">
+        <div class="swiper heroSwiper aspect-[16/9] md:aspect-[21/9] w-full max-h-[calc(100vh-116px)] max-h-[calc(100dvh-116px)]">
+            <div class="swiper-wrapper h-full">
                 <!-- Slide 1 -->
-                <div class="swiper-slide relative">
+                <div class="swiper-slide relative h-full">
                     <a href="#" class="block w-full h-full">
-                        <img src="https://i.imgur.com/wEbICmQ.jpg" alt="Banner 1" class="w-full h-full object-cover">
+                        <img src="https://i.imgur.com/wEbICmQ.jpg" alt="Banner 1" class="w-full h-full object-cover object-center">
                     </a>
                 </div>
                 <!-- Slide 2 -->
-                <div class="swiper-slide relative">
+                <div class="swiper-slide relative h-full">
                     <a href="#" class="block w-full h-full">
-                        <img src="https://i.imgur.com/o2xRaCN.jpg" alt="Banner 2" class="w-full h-full object-cover">
+                        <img src="https://i.imgur.com/o2xRaCN.jpg" alt="Banner 2" class="w-full h-full object-cover object-center">
                     </a>
                 </div>
                 <!-- Slide 3 -->
-                <div class="swiper-slide relative">
+                <div class="swiper-slide relative h-full">
                     <a href="#" class="block w-full h-full">
-                        <img src="https://i.imgur.com/XBQdfZJ.jpg" alt="Banner 3" class="w-full h-full object-cover">
+                        <img src="https://i.imgur.com/XBQdfZJ.jpg" alt="Banner 3" class="w-full h-full object-cover object-center">
                     </a>
                 </div>
             </div>
