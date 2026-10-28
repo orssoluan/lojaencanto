@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrega Final - Lojas Encanto</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Poppins:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        serif: ['Fraunces', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            primary: '#00C8E2',
+                            secondary: '#FFFFFF',
+                            dark: '#2E2A27',
+                            light: '#FAF6F0',
+                            accent: '#B23A62',
+                            darkTeal: '#0E5A66',
+                            page: '#FAF6F0',
+                            card: '#F1E8DC',
+                            lightPink: '#F5DCE3'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Estilos globais extras e escopo do Gantt */
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        /* Cores do gráfico Gantt integradas com Tailwind */
+        :root {
+            --brand-primary: #00C8E2;
+            --primary: #00C8E2;
+            --header-bg: #0E5A66;
+            --text-main: #2E2A27;
+            --text-light: #546e7a;
+            --bg-page: #FAF6F0;
+            --bg-container: #FFFFFF;
+            --border-color: #F1E8DC;
+            --cell-bg: #FFFFFF;
+            --topic-bg: #F5DCE3;
+        }
+
+        .gantt-app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--bg-container);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 200, 226, 0.12);
+            border: none;
+        }
+
+        .gantt-chart {
+            display: grid;
+            grid-template-columns: 280px 1fr 1fr 1fr 1fr 1fr 1fr;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        .gantt-header {
+            background-color: var(--header-bg);
+            color: #ffffff;
+            padding: 15px;
+            font-weight: bold;
+            text-align: center;
+            border-right: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .gantt-header:last-child { border-right: none; }
+        .gantt-header.topic { text-align: left; }
+
+        .gantt-cell {
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            min-height: 60px;
+            background-color: var(--cell-bg);
+        }
+        
+        .gantt-cell:nth-child(7n) { border-right: none; }
+
+        .topic-cell {
+            font-weight: 600;
+            color: var(--text-main);
+            background-color: var(--topic-bg);
+            font-size: 0.95rem;
+        }
+
+        .gantt-bar {
+            background-color: var(--primary);
+            height: 36px;
+            width: 100%;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 200, 226, 0.3);
+        }
+
+        .gantt-bar:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 8px rgba(0, 200, 226, 0.5);
+            background-color: #00b4cc;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 100, 113, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background-color: var(--bg-container);
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            border: none;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover { color: var(--primary); }
+
+        .modal-title {
+            color: var(--brand-primary);
+            margin-bottom: 15px;
+            padding-right: 30px;
+            text-align: left;
+            border-bottom: 2px solid var(--primary);
+            display: inline-block;
+            padding-bottom: 5px;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .modal-desc {
+            color: var(--text-light);
+            line-height: 1.6;
+            font-size: 1.05rem;
+            margin-top: 10px;
+        }
+
+        .modal-meta {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.95rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* Estilo Service Cards */
+        .service-cards-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .service-card {
+            background: var(--bg-container);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 200, 226, 0.08);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 200, 226, 0.2);
+            border-color: var(--primary);
+        }
+
+        .card-header {
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--primary);
+            background: var(--topic-bg);
+        }
+
+        .card-header h3 {
+            margin: 0;
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: var(--brand-primary);
+        }
+
+        .card-body {
+            padding: 30px;
+            flex-grow: 1;
+            background-color: var(--bg-container);
+        }
+
+        .service-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            margin-bottom: 15px;
+            background: var(--bg-page);
+            border-radius: 10px;
+            border-left: 5px solid var(--primary);
+            font-weight: 600;
+            color: var(--text-main);
+            transition: background 0.2s ease, transform 0.2s ease;
+            font-size: 0.95rem;
+        }
+
+        .service-item:hover {
+            background: rgba(0, 200, 226, 0.08);
+            transform: translateX(5px);
+        }
+
+        .service-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 200, 226, 0.15);
+            color: var(--primary);
+            border-radius: 50%;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 900px) {
+            .gantt-chart {
+                grid-template-columns: 150px 1fr 1fr 1fr 1fr 1fr 1fr;
+                overflow-x: auto;
+            }
+            .gantt-header { font-size: 0.75rem; padding: 10px 5px; }
+            .topic-cell { font-size: 0.85rem; }
+            .service-cards-container { grid-template-columns: 1fr; }
+        }
+
+        /* Timeline Styles */
+        .timeline-node {
+            transition: all 0.3s ease;
+        }
+        .timeline-node:hover {
+            transform: translateY(-5px) scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-brand-page text-brand-dark antialiased overflow-x-hidden">
+
+    <!-- Header Fixo -->
+    <header class="fixed top-0 w-full bg-white/95 backdrop-blur shadow-sm border-b border-brand-card z-[999] h-20 flex items-center px-6 md:px-12">
+        <div class="w-1/3"></div> <!-- Spacer -->
+        <div class="w-1/3 flex justify-center">
+            <img src="https://www.lojasencanto.com.br/uploads/lojasencanto/design/Logo15875864471251586443.webp" alt="Lojas Encanto Logo" class="h-12 object-contain">
+        </div>
+        <div class="w-1/3 flex justify-end">
+            <img src="https://i.imgur.com/jmzaox0.png" alt="V4 Company Logo" class="h-10 object-contain">
+        </div>
+    </header>
+
+    <!-- Hero Section com Animação -->
+    <section class="relative h-screen w-full flex items-center justify-center overflow-hidden bg-brand-primary mt-10">
+        <canvas id="hero-canvas" class="absolute top-0 left-0 w-full h-full z-0"></canvas>
+        
+        <div class="relative z-10 text-center pointer-events-none px-6">
+            <div class="bg-brand-darkTeal/40 backdrop-blur-md p-10 md:p-16 rounded-3xl shadow-2xl border border-white/20">
+                <span class="inline-block py-1 px-3 rounded-full bg-brand-accent/90 text-white text-sm font-bold uppercase tracking-widest mb-4 shadow-lg">
+                    Entrega Final
+                </span>
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-serif font-extrabold text-white leading-tight">
+                    Diagnóstico e Planejamento <br/> de Marketing e Vendas
+                </h1>
+            </div>
+        </div>
+    </section>
+
+    <!-- Etapas de Estudo (Linha do Tempo Visual) -->
+    <section class="py-24 bg-white relative">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-serif font-bold text-center text-brand-dark mb-16">Tudo que você aprendeu no projeto:<br><span class="text-brand-primary">Etapas de Estudo</span></h2>
+            
+            <div class="relative flex flex-col md:flex-row justify-between items-center gap-8 md:gap-0">
+                <!-- Linha de fundo -->
+                <div class="hidden md:block absolute top-1/2 left-0 w-full h-1 bg-brand-card -z-10 transform -translate-y-1/2"></div>
+                
+                <!-- Semana 1 -->
+                <div class="timeline-node flex flex-col items-center text-center w-full md:w-1/4 z-10">
+                    <div class="w-12 h-12 bg-white border-4 border-brand-card rounded-full flex items-center justify-center text-brand-dark font-bold mb-4">1</div>
+                    <h3 class="font-bold text-brand-dark">Semana 1</h3>
+                    <p class="text-sm text-gray-500 mt-2">Kick-Off e<br>Oferta Principal</p>
+                </div>
+                
+                <!-- Semana 2 -->
+                <div class="timeline-node flex flex-col items-center text-center w-full md:w-1/4 z-10">
+                    <div class="w-12 h-12 bg-white border-4 border-brand-card rounded-full flex items-center justify-center text-brand-dark font-bold mb-4">2</div>
+                    <h3 class="font-bold text-brand-dark">Semana 2</h3>
+                    <p class="text-sm text-gray-500 mt-2">Pesquisa de Mercado<br>& Posicionamento</p>
+                </div>
+
+                <!-- Semana 3 -->
+                <div class="timeline-node flex flex-col items-center text-center w-full md:w-1/4 z-10">
+                    <div class="w-12 h-12 bg-white border-4 border-brand-card rounded-full flex items-center justify-center text-brand-dark font-bold mb-4">3</div>
+                    <h3 class="font-bold text-brand-dark">Semana 3</h3>
+                    <p class="text-sm text-gray-500 mt-2">Diagnóstico de<br>Marketing</p>
+                </div>
+
+                <!-- Semana 4 e 5 - DESTAQUE -->
+                <div class="timeline-node flex flex-col items-center text-center w-full md:w-1/4 z-10 relative">
+                    <div class="absolute -inset-4 bg-brand-primary/10 rounded-2xl animate-pulse -z-10"></div>
+                    <div class="w-16 h-16 bg-brand-primary border-4 border-white shadow-lg rounded-full flex items-center justify-center text-white font-bold text-xl mb-4">4 & 5</div>
+                    <h3 class="font-extrabold text-brand-primary text-xl">Semanas 4 & 5</h3>
+                    <p class="font-bold text-gray-800 mt-2">Plano de Marketing e Vendas</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nosso Norte -->
+    <section class="py-24 bg-brand-page">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">Nosso Norte</h2>
+            <h3 class="text-3xl font-serif font-bold text-brand-dark mb-8">Qual o principal objetivo que deseja alcançar com a V4 Company?</h3>
+            <div class="bg-white p-10 rounded-2xl shadow-xl border-l-8 border-brand-primary relative">
+                <svg class="absolute top-6 left-6 w-12 h-12 text-brand-primary opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                <p class="text-xl md:text-2xl text-brand-dark leading-relaxed font-light italic relative z-10 mt-4">
+                    Reposicionar a Lojas Encanto nos canais de vendas online, construindo uma oferta irresistível para converter o estoque de coleções antigas sem demonstrar que é outlet, além de definir a estrutura necessária do e-commerce para sustentar o atingimento da meta de vendas de R$ 500 mil reais de vendas mensais no ano de 2027.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2ª semana - Pesquisa de Mercado & Posicionamento -->
+    <section class="py-24 bg-white">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-brand-accent font-bold tracking-wider uppercase text-sm">2ª Semana</span>
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-brand-dark mt-2">Pesquisa de Mercado & Posicionamento</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <!-- Fato 1 -->
+                <div class="bg-brand-page rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-brand-card flex flex-col h-full">
+                    <div class="mb-4">
+                        <span class="bg-brand-darkTeal text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Fato 1: Viabilidade da Meta</span>
+                    </div>
+                    <p class="text-brand-dark mb-6 flex-grow">Meta de R$ 500 mil é viável e representa captura de 0,35% a 1,07% do Mercado Disponível de R$ 560,0 mi a R$ 1,70 bi.</p>
+                    <div class="bg-brand-primary/10 p-5 rounded-xl border-l-4 border-brand-primary mt-auto">
+                        <strong class="text-brand-primary block mb-1">PLANO DE AÇÃO:</strong>
+                        <p class="text-sm text-brand-dark">Reestruturar a capacidade operacional do e-commerce integrando sistemas e logística para capturar a fração necessária do mercado.</p>
+                    </div>
+                </div>
+
+                <!-- Fato 2 -->
+                <div class="bg-brand-page rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-brand-card flex flex-col h-full">
+                    <div class="mb-4">
+                        <span class="bg-brand-darkTeal text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Fato 2: Risco de Conflito Comercial</span>
+                    </div>
+                    <p class="text-brand-dark mb-6 flex-grow">Ameaça de conflito com os 500 lojistas parceiros da Estamparia ao divulgar o e-commerce como outlet de fábrica.</p>
+                    <div class="bg-brand-primary/10 p-5 rounded-xl border-l-4 border-brand-primary mt-auto">
+                        <strong class="text-brand-primary block mb-1">PLANO DE AÇÃO:</strong>
+                        <p class="text-sm text-brand-dark">Posicionar a oferta como "Peças limitadas", divulgando Peças Novas toda a semana sem usar o termo outlet.</p>
+                    </div>
+                </div>
+
+                <!-- Fato 3 -->
+                <div class="bg-brand-page rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-brand-card flex flex-col h-full">
+                    <div class="mb-4">
+                        <span class="bg-brand-darkTeal text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Fato 3: Concorrência Agressiva</span>
+                    </div>
+                    <p class="text-brand-dark mb-6 flex-grow">Concorrentes comercializam tecidos sintéticos de baixo custo mascarados como algodão de alta qualidade.</p>
+                    <div class="bg-brand-primary/10 p-5 rounded-xl border-l-4 border-brand-primary mt-auto">
+                        <strong class="text-brand-primary block mb-1">PLANO DE AÇÃO:</strong>
+                        <p class="text-sm text-brand-dark">Destacar o selo "100% Algodão" e oferecer garantia de 15 noites de teste para quebrar objeções e construir uma oferta irresistível no digital.</p>
+                    </div>
+                </div>
+
+                <!-- Fato 4 -->
+                <div class="bg-brand-page rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-brand-card flex flex-col h-full">
+                    <div class="mb-4">
+                        <span class="bg-brand-darkTeal text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Fato 4: Frete é barreira predominante</span>
+                    </div>
+                    <p class="text-brand-dark mb-6 flex-grow">Pesquisas revelam que 68% dos abandonos de carrinho se concentram na etapa de preenchimento dos dados de envio e os clientes admitem desistir quando há valor de frete. Sendo assim o custo de frete e prazos longos causam desistência no checkout do e-commerce.</p>
+                    <div class="bg-brand-primary/10 p-5 rounded-xl border-l-4 border-brand-primary mt-auto">
+                        <strong class="text-brand-primary block mb-1">PLANO DE AÇÃO:</strong>
+                        <p class="text-sm text-brand-dark">Implementar políticas de frete grátis regionalizado e integrar transportadoras privadas via Tray para reduzir o abandono de carrinho e aumentar as conversões.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <a href="https://drive.google.com/drive/folders/1MetUTvJ0WOUzvLUSBecSlEHjgCOotXfN" target="_blank" class="inline-flex items-center justify-center px-8 py-4 bg-brand-primary text-white font-bold rounded-full shadow-lg hover:bg-brand-darkTeal hover:scale-105 transition-all duration-300">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    Clique para acessar o material
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3ª semana - Diagnóstico Marketing -->
+    <section class="py-24 bg-brand-page">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-brand-accent font-bold tracking-wider uppercase text-sm">3ª Semana</span>
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-brand-dark mt-2">Diagnóstico de Marketing</h2>
+                <p class="text-gray-500 mt-4 max-w-2xl mx-auto">Planos de ação estruturados para escalar suas vendas e consolidar sua operação no digital.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                <!-- Items gerados dinamicamente com base no conteúdo -->
+                <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition-shadow border-t-4 border-brand-primary flex items-start space-x-4">
+                    <div class="bg-brand-primary/10 p-3 rounded-full shrink-0"><svg class="w-6 h-6 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></div>
+                    <p class="text-sm text-gray-700 leading-relaxed"><strong>Plano de Ação:</strong> Migrar o e-commerce para a plataforma Tray integrada ao Bling e Datasul, sincronizando automaticamente o estoque entre a loja física e o site.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition-shadow border-t-4 border-brand-primary flex items-start space-x-4">
+                    <div class="bg-brand-primary/10 p-3 rounded-full shrink-0"><svg class="w-6 h-6 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></div>
+                    <p class="text-sm text-gray-700 leading-relaxed"><strong>Plano de Ação:</strong> Anunciar no Google Search o termo "jogo de cama queen 100 algodao" de 3.600 buscas mensais e CPC máximo acessível de R$ 1,80.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition-shadow border-t-4 border-brand-primary flex items-start space-x-4">
+                    <div class="bg-brand-primary/10 p-3 rounded-full shrink-0"><svg class="w-6 h-6 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></div>
+                    <p class="text-sm text-gray-700 leading-relaxed"><strong>Plano de Ação:</strong> Comprar no Google Search o termo "cobre leito queen 100 algodao" de 2.900 buscas mensais e CPC atrativo de R$ 1,34.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition-shadow border-t-4 border-brand-primary flex items-start space-x-4">
+                    <div class="bg-brand-primary/10 p-3 rounded-full shrink-0"><svg class="w-6 h-6 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></div>
+                    <p class="text-sm text-gray-700 leading-relaxed"><strong>Plano de Ação:</strong> Veicular anúncios no Meta Ads em formato UGC e Advantage+ Catalog direcionados para mulheres de classe C e B acima de 35 anos.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition-shadow border-t-4 border-brand-primary flex items-start space-x-4">
+                    <div class="bg-brand-primary/10 p-3 rounded-full shrink-0"><svg class="w-6 h-6 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></div>
+                    <p class="text-sm text-gray-700 leading-relaxed"><strong>Plano de Ação:</strong> Integrar transportadoras privadas via Tray e oferecer frete grátis regionalizado e reduzir a taxa de abandono de checkout.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition-shadow border-t-4 border-brand-primary flex items-start space-x-4">
+                    <div class="bg-brand-primary/10 p-3 rounded-full shrink-0"><svg class="w-6 h-6 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></div>
+                    <p class="text-sm text-gray-700 leading-relaxed"><strong>Plano de Ação:</strong> Investir verba inicial de R$ 5.000 mensais em mídia paga no Meta e Google Ads, escalando faseadamente para atingir R$ 90 mil/mês.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition-shadow border-t-4 border-brand-primary flex items-start space-x-4">
+                    <div class="bg-brand-primary/10 p-3 rounded-full shrink-0"><svg class="w-6 h-6 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></div>
+                    <p class="text-sm text-gray-700 leading-relaxed"><strong>Plano de Ação:</strong> Configurar barra fixa no topo exibindo frete grátis, parcelamento em 5x sem juros e selo de algodão 100% brasileiro.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition-shadow border-t-4 border-brand-primary flex items-start space-x-4">
+                    <div class="bg-brand-primary/10 p-3 rounded-full shrink-0"><svg class="w-6 h-6 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></div>
+                    <p class="text-sm text-gray-700 leading-relaxed"><strong>Plano de Ação:</strong> Reestruturar a dobra principal com banners de edições limitadas em 100% algodão, parcelamento em 5x e teste de 15 dias.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition-shadow border-t-4 border-brand-primary flex items-start space-x-4">
+                    <div class="bg-brand-primary/10 p-3 rounded-full shrink-0"><svg class="w-6 h-6 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></div>
+                    <p class="text-sm text-gray-700 leading-relaxed"><strong>Plano de Ação:</strong> Fixar o botão de compra flutuante na tela mobile e incluir fotos ambientalizadas e angulações detalhadas do produto.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition-shadow border-t-4 border-brand-primary flex items-start space-x-4">
+                    <div class="bg-brand-primary/10 p-3 rounded-full shrink-0"><svg class="w-6 h-6 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></div>
+                    <p class="text-sm text-gray-700 leading-relaxed"><strong>Plano de Ação:</strong> Instalar códigos de conversão via GTM para registrar corretamente visualizações, adições ao carrinho, início de checkout e compras.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition-shadow border-t-4 border-brand-primary flex items-start space-x-4">
+                    <div class="bg-brand-primary/10 p-3 rounded-full shrink-0"><svg class="w-6 h-6 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></div>
+                    <p class="text-sm text-gray-700 leading-relaxed"><strong>Plano de Ação:</strong> Implementar captura antecipada no checkout solicitando e-mail inicial, seguido por nome, CPF e telefone em etapas fluídas.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition-shadow border-t-4 border-brand-primary flex items-start space-x-4">
+                    <div class="bg-brand-primary/10 p-3 rounded-full shrink-0"><svg class="w-6 h-6 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></div>
+                    <p class="text-sm text-gray-700 leading-relaxed"><strong>Plano de Ação:</strong> Disparar automações de WhatsApp após 15 minutos do abandono de carrinho, e-mail após 2 horas e cupom após 24 horas.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition-shadow border-t-4 border-brand-primary flex items-start space-x-4 lg:col-start-2">
+                    <div class="bg-brand-primary/10 p-3 rounded-full shrink-0"><svg class="w-6 h-6 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></div>
+                    <p class="text-sm text-gray-700 leading-relaxed"><strong>Plano de Ação:</strong> Ativar sistema de order bump na Tray exibindo pop-up com 10% de desconto em produtos complementares ao adicionar ao carrinho</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <a href="https://drive.google.com/drive/folders/1D28VQK-gMHZwEpwesZScyJnGyCuWF9rn" target="_blank" class="inline-flex items-center justify-center px-8 py-4 bg-brand-primary text-white font-bold rounded-full shadow-lg hover:bg-brand-darkTeal hover:scale-105 transition-all duration-300">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    Clique para acessar o material
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Artefatos para execução -->
+    <section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-brand-dark">Artefatos para Execução</h2>
+                <div class="w-24 h-1 bg-brand-accent mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <!-- Linha Superior (3 Contêineres) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <!-- Manual de Identidade Visual -->
+                <div class="bg-brand-page rounded-2xl overflow-hidden shadow hover:shadow-xl transition-all duration-300 flex flex-col border border-brand-card">
+                    <div class="h-48 w-full bg-brand-card relative">
+                        <img src="https://i.imgur.com/9wwZshJ.png" alt="Identidade Visual" class="w-full h-full object-cover" onerror="this.src='https://i.imgur.com/9wwZshJ.jpg'">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow text-center">
+                        <h3 class="font-bold text-lg text-brand-dark mb-4 flex-grow">Manual de Identidade Visual</h3>
+                        <a href="https://drive.google.com/file/d/1E1hok7uwsse5T281DJvNxbKtHhXnZ5Ri/view" target="_blank" class="block w-full py-3 bg-brand-darkTeal text-white text-sm font-bold rounded-lg hover:bg-brand-primary transition-colors">Acessar Material</a>
+                    </div>
+                </div>
+
+                <!-- Criativos para anúncio -->
+                <div class="bg-brand-page rounded-2xl overflow-hidden shadow hover:shadow-xl transition-all duration-300 flex flex-col border border-brand-card">
+                    <div class="h-48 w-full bg-brand-card relative">
+                        <img src="https://i.imgur.com/NjwGCz4.png" alt="Criativos" class="w-full h-full object-cover" onerror="this.src='https://i.imgur.com/NjwGCz4.jpg'">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow text-center">
+                        <h3 class="font-bold text-lg text-brand-dark mb-4 flex-grow">Criativos para Anúncio</h3>
+                        <a href="https://drive.google.com/drive/folders/1qZmMR4u7EW-9iuGuWFyhNZvadFt513H5" target="_blank" class="block w-full py-3 bg-brand-darkTeal text-white text-sm font-bold rounded-lg hover:bg-brand-primary transition-colors">Acessar Material</a>
+                    </div>
+                </div>
+
+                <!-- Banner do Ecommerce -->
+                <div class="bg-brand-page rounded-2xl overflow-hidden shadow hover:shadow-xl transition-all duration-300 flex flex-col border border-brand-card">
+                    <div class="h-48 w-full bg-brand-card relative">
+                        <img src="https://i.imgur.com/XBQdfZJ.png" alt="Banner do E-commerce" class="w-full h-full object-cover" onerror="this.src='https://i.imgur.com/XBQdfZJ.jpg'">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow text-center">
+                        <h3 class="font-bold text-lg text-brand-dark mb-4 flex-grow">Banner do E-commerce</h3>
+                        <a href="https://drive.google.com/drive/folders/1RGGgaj1bUfgM8N6wHj4duxU9k8MtScJg" target="_blank" class="block w-full py-3 bg-brand-darkTeal text-white text-sm font-bold rounded-lg hover:bg-brand-primary transition-colors">Acessar Material</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Linha Inferior (2 Contêineres centralizados) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Aplicação da ID no Ecommerce -->
+                <div class="bg-brand-page rounded-2xl overflow-hidden shadow hover:shadow-xl transition-all duration-300 flex flex-col border border-brand-card">
+                    <div class="h-48 w-full bg-brand-card relative">
+                        <img src="https://i.imgur.com/x4ya9Nk.png" alt="Aplicação da ID no Ecommerce" class="w-full h-full object-cover" onerror="this.src='https://i.imgur.com/x4ya9Nk.jpg'">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow text-center">
+                        <h3 class="font-bold text-lg text-brand-dark mb-4 flex-grow">Aplicação da ID no Ecommerce</h3>
+                        <a href="https://drive.google.com/drive/folders/1RGGgaj1bUfgM8N6wHj4duxU9k8MtScJg" target="_blank" class="block w-full py-3 bg-brand-darkTeal text-white text-sm font-bold rounded-lg hover:bg-brand-primary transition-colors">Acessar Material</a>
+                    </div>
+                </div>
+
+                <!-- RoadMap -->
+                <div class="bg-brand-page rounded-2xl overflow-hidden shadow hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer group border border-brand-card" onclick="openImageModal('https://i.imgur.com/9tbw0bf.jpg')">
+                    <div class="h-48 w-full bg-brand-card relative overflow-hidden">
+                        <img src="https://i.imgur.com/9tbw0bf.jpg" alt="RoadMap" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.src='https://placehold.co/600x400/eeeeee/888888?text=Roadmap'">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow text-center justify-center">
+                        <h3 class="font-bold text-lg text-gray-800 mb-2">RoadMap Estratégico</h3>
+                        <span class="text-sm text-brand-primary font-semibold flex items-center justify-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg> 
+                            Clique para ampliar
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Forecast / Projeção -->
+    <section class="py-24 bg-brand-page">
+        <div class="max-w-5xl mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-serif font-bold text-brand-dark mb-8">Forecast / Projeção</h2>
+            
+            <div class="bg-white rounded-3xl shadow-xl p-4 md:p-8 mb-12 border border-brand-card">
+                <img src="https://i.imgur.com/hSWMVk9.png" alt="Projeção Forecast" class="w-full rounded-xl border border-gray-100" onerror="this.src='https://i.imgur.com/hSWMVk9.jpg'">
+            </div>
+
+            <a href="https://docs.google.com/spreadsheets/d/1Y2yUW66589jEGxGk17XS3jIPu3KC0_YVWd_rrzwV0nA/edit?gid=1285469557#gid=1285469557" target="_blank" class="inline-flex items-center justify-center px-8 py-4 bg-brand-primary text-white font-bold rounded-full shadow-lg hover:bg-brand-darkTeal hover:scale-105 transition-all duration-300">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Clique para acessar a planilha completa
+            </a>
+        </div>
+    </section>
+
+    <!-- Calendário Estratégico (Gráfico de Gantt) -->
+    <section class="py-24 bg-white" id="calendario">
+        <div class="max-w-7xl mx-auto px-6 text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-serif font-bold text-brand-dark">Calendário Estratégico</h2>
+            <p class="text-gray-500 mt-4">Planejamento de execução para os próximos 6 meses.</p>
+        </div>
+
+        <!-- Início do Código do Gantt -->
+        <div class="gantt-app-container">
+            <div class="gantt-chart">
+                <div class="gantt-header topic">Ação / Tópico</div>
+                <div class="gantt-header">Novembro<br><small>2026</small></div>
+                <div class="gantt-header">Dezembro<br><small>2026</small></div>
+                <div class="gantt-header">Janeiro<br><small>2027</small></div>
+                <div class="gantt-header">Fevereiro<br><small>2027</small></div>
+                <div class="gantt-header">Março<br><small>2027</small></div>
+                <div class="gantt-header">Abril<br><small>2027</small></div>
+
+                <!-- Mês 1: Novembro 2026 -->
+                <div class="gantt-cell topic-cell">Fase 01 - Plataforma e UX</div>
+                <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Fase 01 - Plataforma e UX - novo Ecommerce', 'A execução será feita através da assinatura da Tray, instalação de tema, fixação do botão de compra e aplicação de textos focados em edição final e algodão brasileiro, além de configurar frete grátis. A entrega será um layout responsivo e persuasivo, pronto para receber integrações e produtos.', 'Novembro 2026')"></div></div>
+                <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+
+                <div class="gantt-cell topic-cell">Fase 02 - Integrações</div>
+                <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Fase 02 - Integrações', 'A execução será feita através da integração da Tray com ERP Bling, sincronizando estoques, além de configurar GTM, GA4 e Meta Pixel. Otimizaremos o checkout com captura antecipada de e-mail e automação de abandono. A entrega será um ecossistema conectado e rastreável, base segura para escalar as vendas.', 'Novembro 2026')"></div></div>
+                <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+
+                <div class="gantt-cell topic-cell">Ajustar bio Instagram</div>
+                <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Ajustar bio Instagram', 'Recomendamos a alocação em Social Media, para alinhar a comunicação e eliminar qualquer percepção de saldão ou outlet. A execução será feita reescrevendo a bio e os links conforme entregue no Diag. de Marketing para focar no novo território: 100% algodão, estampas autorais e edições limitadas. A entrega será um perfil otimizado que prepara a audiência para a estratégia de drops mensais e direciona o tráfego organicamente para o site.', 'Novembro 2026')"></div></div>
+                <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+
+                <!-- Mês 1 e 2: Novembro a Dezembro 2026 -->
+                <div class="gantt-cell topic-cell">Fase 03 - Cadastros de produtos</div>
+                <div class="gantt-cell"><div class="gantt-bar" style="border-top-right-radius: 0; border-bottom-right-radius: 0;" onclick="openModal('Fase 03 Cadastros de produtos', 'A execução será feita através da filtragem de itens, hospedagem em massa de imagens e cadastro de cento e cinquenta produtos com variações de estampas, validando a importação do Bling. A entrega esperada é um catálogo totalmente higienizado, revisado e com descrições persuasivas, sendo um pilar fundamental para atrair a demanda qualificada.', 'Novembro a Dezembro 2026')"></div></div>
+                <div class="gantt-cell"><div class="gantt-bar" style="border-top-left-radius: 0; border-bottom-left-radius: 0;" onclick="openModal('Fase 03 Cadastros de produtos', 'A execução será feita através da filtragem de itens, hospedagem em massa de imagens e cadastro de cento e cinquenta produtos com variações de estampas, validando a importação do Bling. A entrega esperada é um catálogo totalmente higienizado, revisado e com descrições persuasivas, sendo um pilar fundamental para atrair a demanda qualificada.', 'Novembro a Dezembro 2026')"></div></div>
+                <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+
+                <!-- Mês 2: Dezembro 2026 -->
+                <div class="gantt-cell topic-cell">Fase 04 - Lançamento</div>
+                <div class="gantt-cell"></div>
+                <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Fase 04 Lançamento', 'Go-Live e publicação para concluir o setup. A execução será feita através de testes de Quality Assurance, simulando compras, cálculos de frete e navegação, seguidos pela aprovação final da diretoria e migração do domínio principal. A entrega será a publicação oficial da loja, garantindo um ambiente de conversão validado e totalmente público.', 'Dezembro 2026')"></div></div>
+                <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+
+                <div class="gantt-cell topic-cell">Produzir criativos e copy</div>
+                <div class="gantt-cell"></div>
+                <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Produzir criativos copy', 'Recomendamos a alocação do Pack de Criativos e Copywriting, a ser executada através da produção de vídeos UGC dos produtos e imagens estáticas falando do produto conforme diagnóstico de marketing entregue. A entrega será um acervo de materiais para uso nas novas campanhas de tráfego pago.', 'Dezembro 2026')"></div></div>
+                <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+
+                <div class="gantt-cell topic-cell">Revisão rastreamento de dados</div>
+                <div class="gantt-cell"></div>
+                <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Revisão rastreamento de dados', 'A execução será feita via GTM, instalando o GA4 e o Meta Pixel com a API de Conversões, garantindo que toda a jornada seja metrificada. A entrega esperada é um ambiente de dados limpo para que as campanhas de mídia otimizem com base em vendas.', 'Dezembro 2026')"></div></div>
+                <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+
+                <div class="gantt-cell topic-cell">Iniciar mídia paga</div>
+                <div class="gantt-cell"></div>
+                <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Iniciar mídia paga', 'A execução será feita através da ativação de campanhas no Google Search para termos específicos e Meta Ads segmentado para o público feminino. A entrega esperada é a geração dos primeiros picos de tráfego, validando a conversão das novas estampas com retorno claro e mensurável.', 'Dezembro 2026')"></div></div>
+                <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+
+                <!-- Mês 3: Janeiro 2027 -->
+                <div class="gantt-cell topic-cell">Ativar réguas de recuperação</div>
+                <div class="gantt-cell"></div><div class="gantt-cell"></div>
+                <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Ativar réguas de recuperação', 'Recomendamos o serviço de Réguas de Relacionamento e CRM, a ser executado em janeiro, para a execução da configuração de automações que disparam mensagens via WhatsApp quinze minutos após abandono de carrinho e ofertas de fechamento após vinte e quatro horas via e-mail. A entrega será um motor de recuperação automático operando sobre o checkout.', 'Janeiro 2027')"></div></div>
+                <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+
+                <!-- Mês 4: Fevereiro 2027 -->
+                <div class="gantt-cell topic-cell">Criar combos frete</div>
+                <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+                <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Criar combos frete', 'Recomendamos a otimização comercial de E-commerce, a ser executada através do empacotamento de produtos avulsos em kits coordenados que superem os gatilhos de frete grátis. A entrega esperada é uma elevação no ticket médio da loja e a eliminação direta da objeção de frete.', 'Fevereiro 2027')"></div></div>
+                <div class="gantt-cell"></div><div class="gantt-cell"></div>
+
+                <div class="gantt-cell topic-cell">Implementar Order Bump</div>
+                <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+                <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Implementar Order Bump', 'Recomendamos a otimização de E-commerce, a ser executada configurando na Tray a oferta de um produto complementar de margem alta (ex: 2 fronhas avulsas com 10% OFF) no momento de fechamento. A entrega esperada é um salto automático de 10 a 15% no ticket médio mensal.', 'Fevereiro 2027')"></div></div>
+                <div class="gantt-cell"></div><div class="gantt-cell"></div>
+
+                <!-- Mês 5: Março 2027 -->
+                <div class="gantt-cell topic-cell">Estruturar CRM recompra</div>
+                <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+                <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Estruturar CRM recompra', 'Recomendamos a operação de CRM Vendas/Marketing, a ser executada em março, sobre os clientes da base e reduzir dependência de anúncios. A execução será feita através de disparos de WhatsApp e e-mail marketing focados na liberação mensal de novas estampas, incentivando antecipação.', 'Março 2027')"></div></div>
+                <div class="gantt-cell"></div>
+
+                <!-- Mês 6: Abril 2027 -->
+                <div class="gantt-cell topic-cell">Replanejar orçamento mídia</div>
+                <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+                <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Replanejar orçamento mídia', 'A execução será feita através da consolidação dos dados reais de conversão do trimestre e do redesenho do cronograma de anúncios com base no ROAS. A entrega será um novo plano de escala sustentável para atingir a meta de faturamento.', 'Abril 2027')"></div></div>
+            </div>
+
+            <!-- Resumo de Serviços -->
+            <div class="mt-12 pt-10 border-t-2 border-dashed border-gray-200">
+                <h2 class="text-2xl font-bold text-center text-brand-primary mb-10">Resumo de Serviços Recomendados</h2>
+                <div class="service-cards-container">
+                    <div class="service-card">
+                        <div class="card-header">
+                            <h3>Categoria TER</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="service-item">
+                                <div class="service-icon">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                                </div>
+                                Implementação de E-commerce
+                            </div>
+                            <div class="service-item">
+                                <div class="service-icon">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                                </div>
+                                Implementação de Réguas de Relacionamento (Abandono de carrinho)
+                            </div>
+                            <div class="service-item">
+                                <div class="service-icon">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                                </div>
+                                Implementação e Gestão de Dados (E-commerce)
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="service-card">
+                        <div class="card-header">
+                            <h3>Categoria EXECUTAR</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="service-item">
+                                <div class="service-icon">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                                </div>
+                                Combo Performance - E-commerce
+                            </div>
+                            <div class="service-item">
+                                <div class="service-icon">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                                </div>
+                                Profissional de Social Media
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal do Gantt -->
+        <div class="modal-overlay" id="actionModal" onclick="closeModal(event)">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <span class="close-btn" onclick="forceCloseModal()">&times;</span>
+                <h2 class="modal-title" id="modalTitle">Título da Ação</h2>
+                <div class="modal-desc" id="modalDesc">Descrição da ação...</div>
+                <div class="modal-meta" id="modalMeta">Período: </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de Imagem (Lightbox) -->
+    <div class="modal-overlay" id="imageModalOverlay" onclick="closeImageModal(event)" style="background-color: rgba(0, 0, 0, 0.9); z-index: 10000;">
+        <span class="close-btn" style="color: white; font-size: 45px; top: 20px; right: 30px;" onclick="forceCloseImageModal()">&times;</span>
+        <img id="modalExpandedImage" src="" alt="Imagem Ampliada" style="max-width: 95%; max-height: 90vh; border-radius: 8px; transition: transform 0.2s;" class="scale-95" onclick="event.stopPropagation()">
+    </div>
+
+    <!-- Materiais do Mapa Estratégico & CTA -->
+    <section class="py-24 bg-brand-page border-b border-brand-card">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-2xl md:text-3xl font-serif font-bold text-brand-dark mb-8">Acesse aqui todos os materiais do Mapa Estratégico Digital:</h2>
+            <a href="https://drive.google.com/drive/folders/16TiPFy9cDI_BdGobJ4QfOy_0NKlbuvE1" target="_blank" class="inline-flex items-center justify-center px-10 py-5 bg-brand-darkTeal text-white font-bold rounded-full shadow-2xl hover:bg-brand-dark hover:scale-105 transition-all duration-300 text-lg">
+                <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>
+                Clique para acessar o material
+            </a>
+        </div>
+    </section>
+
+    <!-- Fechamento -->
+    <section class="py-24 bg-brand-primary text-center">
+        <div class="max-w-4xl mx-auto px-6">
+            <h2 class="text-3xl md:text-5xl font-serif font-extrabold text-white leading-tight uppercase tracking-wide">
+                Obrigado por <br> abrir as portas para a V4 Company
+            </h2>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#E50914] py-8 w-full flex items-center justify-center space-x-3 text-white font-bold">
+        <span>Produzido por:</span>
+        <img src="https://i.imgur.com/SU08Zb0.png" alt="Logotipo Produzido Por" class="h-6 object-contain" onerror="this.src='https://i.imgur.com/SU08Zb0.jpg'">
+    </footer>
+
+    <!-- Scripts: Canvas Hero e Gráfico Gantt -->
+    <script>
+        // --- 1. SCRIPT DO CANVAS ANIMADO (HERO) ---
+        const coresDasBolinhas = ['#FFFFFF']; 
+        const corDasLinhas = '#FFFFFF'; 
+
+        const canvas = document.getElementById('hero-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+        
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            // Pega a altura da section pai para preencher certinho
+            height = canvas.height = canvas.parentElement.offsetHeight;
+        }
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 1.5;
+                this.vy = (Math.random() - 0.5) * 1.5;
+                this.size = Math.random() * 3 + 1;
+                this.color = coresDasBolinhas[Math.floor(Math.random() * coresDasBolinhas.length)];
+                this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+            
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.alpha;
+                ctx.fill();
+            }
+        }
+        
+        function init() {
+            particles = [];
+            const particleCount = width > 768 ? 150 : 60; 
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+        
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            particles.forEach((p, index) => {
+                p.update();
+                p.draw();
+                
+                for (let j = index + 1; j < particles.length; j++) {
+                    const p2 = particles[j];
+                    const dx = p.x - p2.x;
+                    const dy = p.y - p2.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 150) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = corDasLinhas;
+                        ctx.globalAlpha = 1 - (distance / 150);
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            });
+            
+            requestAnimationFrame(animate);
+        }
+        
+        window.addEventListener('resize', () => {
+            resize();
+            init();
+        });
+        
+        // Iniciar Canvas após carregamento
+        window.onload = function() {
+            resize();
+            init();
+            animate();
+        };
+
+        // --- 2. SCRIPT DO MODAL DO GRÁFICO GANTT ---
+        const modal = document.getElementById('actionModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDesc = document.getElementById('modalDesc');
+        const modalMeta = document.getElementById('modalMeta');
+
+        function openModal(title, description, period) {
+            modalTitle.textContent = title;
+            modalDesc.textContent = description;
+            modalMeta.textContent = 'Período estimado: ' + period;
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(event) {
+            if (event.target === modal) {
+                forceCloseModal();
+            }
+        }
+
+        function forceCloseModal() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // --- 3. SCRIPT DO MODAL DE IMAGEM (LIGHTBOX) ---
+        const imageModal = document.getElementById('imageModalOverlay');
+        const expandedImg = document.getElementById('modalExpandedImage');
+
+        function openImageModal(src) {
+            expandedImg.src = src;
+            imageModal.style.display = 'flex';
+            setTimeout(() => {
+                expandedImg.classList.remove('scale-95');
+                expandedImg.classList.add('scale-100');
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeImageModal(event) {
+            if (event.target === imageModal) {
+                forceCloseImageModal();
+            }
+        }
+
+        function forceCloseImageModal() {
+            expandedImg.classList.remove('scale-100');
+            expandedImg.classList.add('scale-95');
+            setTimeout(() => {
+                imageModal.style.display = 'none';
+                if (modal.style.display !== 'flex') { 
+                    document.body.style.overflow = 'auto';
+                }
+            }, 150);
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                forceCloseModal();
+                if (typeof forceCloseImageModal === 'function') forceCloseImageModal();
+            }
+        });
+    </script>
+</body>
+</html>
