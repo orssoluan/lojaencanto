@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico de Marketing / Comercial - Lojas Encanto</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        primary: '#00C8E2',
+                        primaryDark: '#009bb0',
+                        secondary: '#FFFFFF',
+                        darkBg: '#1B3859',
+                        footerRed: '#E50914',
+                        textMain: '#333333',
+                        textMuted: '#666666'
+                    },
+                    boxShadow: {
+                        'glow': '0 10px 25px -5px rgba(0, 200, 226, 0.4)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #1B3859; border-radius: 6px; border: 3px solid #f1f1f1;}
+        ::-webkit-scrollbar-thumb:hover { background: #00C8E2; }
+
+        /* Glassmorphism */
+        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.3); }
+        .glass-card { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.5); }
+
+        /* Text Gradient */
+        .text-gradient { background: linear-gradient(135deg, #00C8E2 0%, #1B3859 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        /* Animations */
+        .slow-zoom { animation: zoom 25s infinite alternate ease-in-out; }
+        @keyframes zoom { from { transform: scale(1); } to { transform: scale(1.15); } }
+
+        .blob { filter: blur(60px); animation: pulse 8s infinite alternate ease-in-out; }
+        @keyframes pulse { 0% { transform: scale(1) translate(0, 0); opacity: 0.5; } 100% { transform: scale(1.3) translate(20px, -20px); opacity: 0.8; } }
+
+        .shine { position: relative; overflow: hidden; }
+        .shine::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%); transform: skewX(-25deg); animation: shine 3s infinite; }
+        @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
+
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .parallax { background-attachment: fixed; background-position: center; background-repeat: no-repeat; background-size: cover; }
+
+        /* Tooltip */
+        .tooltip { position: relative; display: inline-block; border-bottom: 2px dotted #00C8E2; cursor: help; font-weight: 600; color: #1B3859;}
+        .tooltip .tooltiptext { visibility: hidden; width: max-content; max-width: 250px; background-color: #1B3859; color: #fff; text-align: center; border-radius: 8px; padding: 8px 12px; position: absolute; z-index: 10; bottom: 130%; left: 50%; transform: translateX(-50%) translateY(10px); opacity: 0; transition: all 0.3s ease; font-size: 0.875rem; font-weight: 400; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
+        .tooltip .tooltiptext::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: #1B3859 transparent transparent transparent; }
+        .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* Layout Utilities */
+        .phone-mockup { border-radius: 2.5rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); border: 12px solid #1f2937; background: #000; overflow: hidden; position: relative; aspect-ratio: 9/16; }
+        .phone-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 40%; height: 25px; background: #1f2937; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; z-index: 20;}
+    </style>
+</head>
+<body class="bg-gray-50 text-textMain font-sans antialiased overflow-x-hidden">
+
+    <!-- Navbar -->
+    <header id="header" class="fixed w-full top-0 z-50 transition-all duration-300 bg-transparent py-4">
+        <div class="container mx-auto px-6 flex justify-between items-center relative">
+            <div class="w-1/3"></div> <!-- Spacer -->
+            <!-- Client Logo (Center) -->
+            <div class="w-1/3 flex justify-center">
+                <img src="https://www.lojasencanto.com.br/uploads/lojasencanto/design/Logo15875864471251586443.webp" alt="Lojas Encanto Logo" class="h-12 hover:scale-105 transition-transform duration-300">
+            </div>
+            <!-- Agency Logo (Right) -->
+            <div class="w-1/3 flex justify-end">
+                <img src="https://brand.v4company.com/_next/image?url=%2Fimages%2Flogos%2Fsimbolo-company.webp&w=256&q=75" alt="V4 Company Logo" class="h-10 hover:scale-105 transition-transform duration-300" style="filter: brightness(0) invert(1);">
+            </div>
+        </div>
+    </header>
+
+    <!-- Sessão 01: Hero -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <div class="w-full h-full bg-darkBg absolute inset-0 opacity-90 z-10"></div>
+            <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Background Cama" class="w-full h-full object-cover slow-zoom">
+        </div>
+        <!-- Blobs -->
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary rounded-full mix-blend-multiply opacity-40 blob z-10"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply opacity-40 blob z-10" style="animation-delay: 2s;"></div>
+
+        <div class="relative z-20 text-center px-6 max-w-4xl mx-auto reveal">
+            <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight drop-shadow-lg">
+                Diagnóstico de <br><span class="text-gradient bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-200">Marketing / Comercial</span>
+            </h1>
+            <div class="mt-12">
+                <a href="#sumario" class="inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white bg-primary rounded-full hover:-translate-y-1 hover:shadow-glow transition-all duration-300 shine">
+                    Iniciar Apresentação <i class="fas fa-arrow-down ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sessão 02: SUMÁRIO -->
+    <section id="sumario" class="py-24 bg-white relative">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl font-bold text-darkBg mb-4">SUMÁRIO</h2>
+                <div class="inline-flex items-center bg-gray-100 text-gray-700 px-4 py-2 rounded-full font-medium text-sm">
+                    <i class="far fa-clock text-primary mr-2"></i> Duração Estimada: 1h
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:-translate-y-2 hover:shadow-xl transition-all duration-300 group reveal cursor-pointer">
+                    <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center text-primary text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-darkBg">Diagnóstico de Mídia Paga</h3>
+                    <p class="text-textMuted">- Análise de Meta Ads e oportunidades no Google Ads.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:-translate-y-2 hover:shadow-xl transition-all duration-300 group reveal cursor-pointer" style="transition-delay: 100ms;">
+                    <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center text-primary text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-darkBg">Diagnóstico do Site</h3>
+                    <p class="text-textMuted">- Pilares de funil, rastreamento e experiência de compra.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:-translate-y-2 hover:shadow-xl transition-all duration-300 group reveal cursor-pointer" style="transition-delay: 200ms;">
+                    <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center text-primary text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-darkBg">Auditoria de E-commerce</h3>
+                    <p class="text-textMuted">- Identificação de gargalos técnicos e premissas.</p>
+                </div>
+                <!-- Card 4 -->
+                <div class="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:-translate-y-2 hover:shadow-xl transition-all duration-300 group reveal cursor-pointer" style="transition-delay: 300ms;">
+                    <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center text-primary text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-darkBg">Plano de Ação e Roadmap</h3>
+                    <p class="text-textMuted">- Cronograma de execução e progressão de verba.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sessão 03: Diagnóstico de mídia paga -->
+    <section class="py-24 bg-gray-50 border-t border-gray-200">
+        <div class="container mx-auto px-6 max-w-7xl">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl md:text-5xl font-extrabold text-darkBg text-gradient">Diagnóstico de mídia paga</h2>
+            </div>
+
+            <!-- Meta Ads -->
+            <div class="mb-20 reveal">
+                <h3 class="text-3xl font-bold text-darkBg mb-8 border-l-4 border-primary pl-4">1. Benchmark Meta Ads</h3>
+                
+                <div class="prose max-w-none text-lg text-textMain mb-12">
+                    <p class="mb-6">- O mercado de e-commerce de cama, mesa e banho apresenta dois perfis muito bem definidos de concorrentes, o que cria uma janela de oportunidade para o novo posicionamento da Lojas Encanto:</p>
+                    
+                    <ul class="space-y-6 list-none pl-0">
+                        <li class="bg-white p-6 rounded-xl shadow-sm border border-gray-100"><strong class="text-darkBg text-xl block mb-2">Grande Porte (Ex: Karsten):</strong> Operação focada em altíssimo volume de tráfego, anúncios institucionais de estúdio, produtos padronizados e presença em todos os canais de busca e display.</li>
+                        
+                        <li class="bg-white p-6 rounded-xl shadow-sm border border-gray-100"><strong class="text-darkBg text-xl block mb-2">Nativos Digitais (Ex: Hoomy):</strong> Escala no Meta Ads (mais de 450 anúncios ativos), ganchos de economia/comparativo de preços, vídeos dinâmicos no formato <span class="tooltip">UGC<span class="tooltiptext">User Generated Content (Conteúdo Gerado pelo Usuário), traz mais autenticidade.</span></span> e promessa de luxo acessível.</li>
+                    </ul>
+                </div>
+
+                <!-- Simulation Videos Hoomy -->
+                <div class="bg-darkBg rounded-3xl p-10 mb-12 text-white relative overflow-hidden reveal">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-primary rounded-full mix-blend-overlay opacity-20 blob"></div>
+                    <h4 class="text-2xl font-bold mb-8 text-center"><i class="fab fa-instagram text-primary mr-2"></i> Simulação de Anúncios (Hoomy)</h4>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
+                        <!-- Ad 1 -->
+                        <div class="flex flex-col items-center">
+                            <div class="phone-mockup w-64 mb-6 hover:-translate-y-2 transition-transform">
+                                <div class="phone-notch"></div>
+                                <video src="https://i.imgur.com/dLzBCWu.mp4" autoplay loop muted playsinline class="w-full h-full object-cover"></video>
+                                <button class="absolute bottom-4 right-4 bg-black/60 p-3 rounded-full text-white audio-toggle hover:bg-primary transition-colors z-30">
+                                    <i class="fas fa-volume-mute"></i>
+                                </button>
+                            </div>
+                            <div class="bg-white/10 p-4 rounded-xl backdrop-blur-sm text-sm w-full">
+                                <div class="line-clamp-3 text-gray-200 mb-2">
+                                    <p><strong>Copy do anúncio -</strong> Com 670g/m² de gramatura e algodão turco legítimo, a Toalha Hoomy é o que existe de mais macio, absorvente e durável no país.</p>
+                                    <p>🖤 Um novo padrão de cuidado, conforto e sofisticação para a sua rotina de banho.</p>
+                                    <p>As unidades são limitadas e podem esgotar rapidamente.</p>
+                                    <p>👉 Garanta agora a sua Toalha Hoomy e transforme o seu banho em um verdadeiro ritual de spa.</p>
+                                </div>
+                                <button class="text-primary font-bold hover:underline btn-read-more w-full text-left">Ver mais</button>
+                            </div>
+                        </div>
+
+                        <!-- Ad 2 -->
+                        <div class="flex flex-col items-center">
+                            <div class="phone-mockup w-64 mb-6 hover:-translate-y-2 transition-transform">
+                                <div class="phone-notch"></div>
+                                <video src="https://i.imgur.com/Wok8fFK.mp4" autoplay loop muted playsinline class="w-full h-full object-cover"></video>
+                                <button class="absolute bottom-4 right-4 bg-black/60 p-3 rounded-full text-white audio-toggle hover:bg-primary transition-colors z-30">
+                                    <i class="fas fa-volume-mute"></i>
+                                </button>
+                            </div>
+                            <div class="bg-white/10 p-4 rounded-xl backdrop-blur-sm text-sm w-full">
+                                <div class="line-clamp-3 text-gray-200 mb-2">
+                                    <p><strong>Copy do anúncio -</strong> Conheça o lençol que vai mudar as suas noites de sono. Feito em puro algodão egípcio certificado e com o número ideal de fios.</p>
+                                    <p>Ele foi eleito o lençol com melhor custo-benefício do país.</p>
+                                    <p>E você ainda tem 15 noites de teste. Peça o seu sem risco algum, porque se você não gostar devolvemos todo o seu dinheiro.</p>
+                                    <p>Clique no botão abaixo e faça seu pedido. Você ainda ganha frete grátis.</p>
+                                </div>
+                                <button class="text-primary font-bold hover:underline btn-read-more w-full text-left">Ver mais</button>
+                            </div>
+                        </div>
+
+                        <!-- Ad 3 (Static) -->
+                        <div class="flex flex-col items-center">
+                            <div class="rounded-xl overflow-hidden shadow-lg border-4 border-gray-800 mb-6 relative group cursor-pointer hover:-translate-y-2 transition-transform w-full">
+                                <img src="https://i.imgur.com/CMrUFZX.jpg" alt="Anúncio estático" class="w-full h-auto object-cover lightbox-trigger">
+                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity pointer-events-none">
+                                    <i class="fas fa-search-plus text-white text-3xl"></i>
+                                </div>
+                            </div>
+                            <div class="bg-white/10 p-4 rounded-xl backdrop-blur-sm text-sm w-full text-center">
+                                <p class="text-gray-200"><strong>Anúncio estático</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="prose max-w-none text-lg text-textMain mb-12">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6">
+                        <strong class="text-darkBg text-xl block mb-2">Marcas Tradicionais (Ex: Buddemeyer / Casa Almeida):</strong> Forte apelo e autoridade de marca, porém com presença digita com pouquíssimos anúncios ativos e falhas na cobertura do Google Ads.
+                    </div>
+                    
+                    <div class="bg-primary/10 border-l-4 border-primary p-6 rounded-r-xl">
+                        <strong class="text-darkBg text-xl block mb-2"><i class="fas fa-lightbulb text-primary mr-2"></i> Oportunidade Lojas Encanto:</strong> 
+                        Ocupar o espaço entre os grandes e os players de nicho, combinando o apelo do <strong>Algodão 100% Brasileiro Certificado</strong> com o conceito de <strong>Coleções em Lotes Limitados</strong>, gerando escassez, exclusividade e melhor custo-benefício.
+                    </div>
+                </div>
+
+                <!-- Simulation Videos Lojas Encanto Context -->
+                <div class="bg-gray-100 rounded-3xl p-10 mb-12 relative overflow-hidden reveal">
+                    <h4 class="text-2xl font-bold mb-8 text-center text-darkBg"><i class="fab fa-instagram text-pink-500 mr-2"></i> Benchmark Criativos</h4>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+                        <!-- Video Lojas Encanto -->
+                        <div class="flex flex-col items-center">
+                            <div class="phone-mockup w-64 mb-6 hover:-translate-y-2 transition-transform">
+                                <div class="phone-notch"></div>
+                                <video src="https://i.imgur.com/iJ7aODz.mp4" autoplay loop muted playsinline class="w-full h-full object-cover"></video>
+                                <button class="absolute bottom-4 right-4 bg-black/60 p-3 rounded-full text-white audio-toggle hover:bg-primary transition-colors z-30">
+                                    <i class="fas fa-volume-mute"></i>
+                                </button>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 text-sm w-full">
+                                <div class="line-clamp-3 text-gray-700 mb-2">
+                                    <p><strong>Copy do anúncio -</strong> Mais de 4.000 novos lençóis chegando no estoque hoje! 😱🏠</p>
+                                    <p>Passando para mostrar a reposição do nosso queridinho: Jogo de Lençol 400 fios no Ponto Palito. 😍</p>
+                                    <p>Disponível em vários tamanhos, inclusive no King! 👑✨</p>
+                                </div>
+                                <button class="text-primary font-bold hover:underline btn-read-more w-full text-left">Ver mais</button>
+                            </div>
+                        </div>
+
+                        <!-- Imagem 2 -->
+                        <div class="flex flex-col items-center">
+                            <div class="rounded-xl overflow-hidden shadow-md border border-gray-200 mb-6 relative group cursor-pointer hover:-translate-y-2 transition-transform w-full">
+                                <img src="https://i.imgur.com/l7DB0S2.jpg" alt="Anúncio Rafamari" class="w-full h-auto object-cover lightbox-trigger aspect-square">
+                                <div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity pointer-events-none">
+                                    <i class="fas fa-search-plus text-white text-3xl"></i>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 text-sm w-full">
+                                <div class="line-clamp-3 text-gray-700 mb-2">
+                                    <p><strong>Copy do anúncio -</strong> O melhor custo benefício em Jogos de Lençol você encontra só aqui na Rafamari.</p>
+                                    <p>Não perca essa oportunidade e garanta já esse item essencial para compor a sua cama. Entre no site e confira!</p>
+                                </div>
+                                <button class="text-primary font-bold hover:underline btn-read-more w-full text-left">Ver mais</button>
+                            </div>
+                        </div>
+
+                        <!-- Imagem 3 -->
+                        <div class="flex flex-col items-center">
+                            <div class="rounded-xl overflow-hidden shadow-md border border-gray-200 mb-6 relative group cursor-pointer hover:-translate-y-2 transition-transform w-full">
+                                <img src="https://i.imgur.com/N62bEWs.jpg" alt="Anúncio Linda Casa" class="w-full h-auto object-cover lightbox-trigger aspect-square">
+                                <div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity pointer-events-none">
+                                    <i class="fas fa-search-plus text-white text-3xl"></i>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 text-sm w-full">
+                                <div class="line-clamp-3 text-gray-700 mb-2">
+                                    <p><strong>Copy do anúncio -</strong> Jogos de Lençol mais vendidos da Linda Casa!</p>
+                                    <p>Os Jogos de Lençol mais vendidos trazem suavidade e conforto que você sente desde o primeiro toque.</p>
+                                    <p>✨ Oferta especial — garanta o seu!<br>👉 Compre agora!</p>
+                                </div>
+                                <button class="text-primary font-bold hover:underline btn-read-more w-full text-left">Ver mais</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Competitor Table -->
+                <div class="overflow-x-auto reveal shadow-lg rounded-2xl">
+                    <table class="w-full text-left border-collapse bg-white rounded-2xl overflow-hidden">
+                        <thead>
+                            <tr class="bg-darkBg text-white">
+                                <th class="p-4 font-bold border-b border-gray-700">Concorrente</th>
+                                <th class="p-4 font-bold border-b border-gray-700">Volume de Anúncios</th>
+                                <th class="p-4 font-bold border-b border-gray-700">Formatos Predominantes</th>
+                                <th class="p-4 font-bold border-b border-gray-700">Principais Ganchos</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-700">
+                            <tr class="hover:bg-gray-50 border-b border-gray-100">
+                                <td class="p-4 font-bold">Karsten</td>
+                                <td class="p-4"><span class="bg-blue-100 text-blue-800 py-1 px-3 rounded-full text-sm font-semibold">76 ativos</span></td>
+                                <td class="p-4">Catálogo Dinâmico, Fotos Estáticas</td>
+                                <td class="p-4 italic">"Ganhe 10% OFF na Primeira Compra" (Cupom BEMVINDO10), "Absorve muito bem, não encolhe e não faz bolinhas".</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 border-b border-gray-100">
+                                <td class="p-4 font-bold">Hoomy</td>
+                                <td class="p-4"><span class="bg-green-100 text-green-800 py-1 px-3 rounded-full text-sm font-semibold">450 ativos</span></td>
+                                <td class="p-4">Vídeos Curtos/Reels (UGC, montagem de cama)</td>
+                                <td class="p-4 italic">"Lençóis Tecnológicos", "A Maior Gramatura do País".</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="p-4 font-bold">Casa Almeida / Buddemeyer</td>
+                                <td class="p-4"><span class="bg-red-100 text-red-800 py-1 px-3 rounded-full text-sm font-semibold">~7 ativos (~2 criativos)</span></td>
+                                <td class="p-4">Carrossel e Vídeo Institucional s</td>
+                                <td class="p-4 italic">"Cuidar da cama é também cuidar dos momentos de descanso".</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Google Ads -->
+            <div class="pt-16 border-t border-gray-200 reveal">
+                <h3 class="text-3xl font-bold text-darkBg mb-8 border-l-4 border-[#F4B400] pl-4"><i class="fab fa-google text-[#F4B400] mr-2"></i> 2. Benchmark Google Ads</h3>
+                
+                <div class="mb-10 text-center cursor-pointer group rounded-2xl overflow-hidden shadow-lg inline-block relative hover:-translate-y-2 transition-transform">
+                    <img src="https://i.imgur.com/zY35yxF.jpg" alt="Google Ads Dashboard" class="w-full max-w-4xl h-auto object-cover lightbox-trigger">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity pointer-events-none">
+                        <i class="fas fa-search-plus text-white text-4xl"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mb-10 text-lg text-gray-700">
+                    <p class="mb-6 font-semibold">A análise dos dados do leilão revela um cenário extremamente favorável e em forte expansão para a Lojas Encanto:</p>
+                    
+                    <ul class="space-y-6 list-none pl-0">
+                        <li class="flex items-start">
+                            <i class="fas fa-chart-line text-green-500 mt-1 mr-4 text-xl"></i>
+                            <div>
+                                <strong>Crescimento de Demanda Operacional (<span class="tooltip">YoY<span class="tooltiptext">Year over Year (Ano contra Ano). Comparativo com o mesmo período do ano anterior.</span></span>):</strong> Houve um aumento expressivo no volume de buscas no último ano para termos de algodão, com destaques como <em>jogo de cama casal 100 algodao</em> (<span class="text-green-600 font-bold">+177% YoY</span>) e <em>jogo de cama queen 100 algodao</em> (<span class="text-green-600 font-bold">+89% YoY</span>).
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-hand-holding-usd text-blue-500 mt-1 mr-4 text-xl"></i>
+                            <div>
+                                <strong>Custo por Clique (<span class="tooltip">CPC<span class="tooltiptext">Custo pago por cada clique no seu anúncio.</span></span>) Altamente Acessível:</strong> O CPC médio para figurar no topo das buscas (maiores valores) varia entre R$ 1,34 e R$ 2,53. Na menor faixa, é possível entrar nos leilões a partir de R$ 0,28 a R$ 0,46, o que garante excelente margem e viabilidade de <span class="tooltip">ROI/ROAS<span class="tooltiptext">Retorno sobre Investimento / Retorno sobre Gastos com Anúncios.</span></span>.
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-primary mt-1 mr-4 text-xl"></i>
+                            <div>
+                                <strong>Validação do Posicionamento:</strong> Existe um volume total expressivo de buscas mensais qualificadas focadas exatamente no carro-chefe da marca (100% Algodão).
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <div class="bg-darkBg text-white p-8 rounded-2xl shadow-xl hover:-translate-y-2 transition-transform">
+                        <h4 class="text-xl font-bold mb-4 flex items-center"><i class="fas fa-bed text-primary mr-3 text-2xl"></i> Oportunidade Queen e Casal</h4>
+                        <p class="text-gray-300 mb-4">Oportunidade de Custo Otimizado nos Tamanhos Queen e Casal:</p>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-300 text-sm">
+                            <li>O termo <em>jogo de cama queen 100 algodao</em> é o campeão de volume (3.600 buscas/mês) e possui um CPC máximo bastante atrativo (R$ 1,80).</li>
+                            <li><em>cobre leito queen 100 algodao</em> (2.900 buscas) possui um dos menores CPCs máximos da conta (R$ 1,34), sendo uma excelente porta de entrada para tráfego qualificado de baixo custo.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white border-2 border-primary p-8 rounded-2xl shadow-xl hover:-translate-y-2 transition-transform">
+                        <h4 class="text-xl font-bold mb-4 flex items-center text-darkBg"><i class="fas fa-tags text-primary mr-3 text-2xl"></i> Produtos de Menor Ticket</h4>
+                        <p class="text-gray-700 mb-4">Entrada por Produtos de Menor Ticket (Isca / Fronhas):</p>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-700 text-sm">
+                            <li>O termo <em>fronha 100 algodao</em> tem alto volume (2.400 buscas/mês) e CPC teto de apenas R$ 1,40. Pode ser utilizado como campanha para atração de novos clientes e upsell de jogos completos na loja.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sessão 05: Diagnóstico do Site -->
+    <section class="py-24 bg-white">
+        <div class="container mx-auto px-6 max-w-7xl">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl md:text-5xl font-extrabold text-darkBg text-gradient">Diagnóstico do Site</h2>
+            </div>
+
+            <div class="mb-16 reveal">
+                <h3 class="text-3xl font-bold text-darkBg mb-6">1. Benchmark</h3>
+                <div class="bg-gray-50 p-8 rounded-2xl shadow-inner border border-gray-200">
+                    <h4 class="text-2xl font-bold mb-4 text-primary">Qual O Mecanismo de um E-commerce de alta perfomance?</h4>
+                    <p class="text-lg text-gray-700 mb-4">Um e-commerce de alta performance opera como uma esteira contínua de atração, captura e monetização.</p>
+                    <p class="text-lg text-gray-700">A média de mercado é que apenas 1 a 2 de cada 100 visitantes comprem na primeira visita (taxa de conversão de 1% a 2%). O objetivo do marketing é configurar dados e experiência de compra para aumentar essa eficiência. Basicamente, é transformar tráfego em vendas e, principalmente, recuperar automaticamente os 98% que saem sem pagar.</p>
+                </div>
+            </div>
+
+            <!-- Pilares -->
+            <div class="space-y-16">
+                
+                <!-- Pilar 1 -->
+                <div class="reveal bg-white border border-gray-100 rounded-3xl p-10 shadow-lg hover:shadow-2xl transition-shadow relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-32 h-32 bg-primary/10 rounded-full blur-2xl"></div>
+                    <h4 class="text-2xl font-bold text-darkBg mb-6 flex items-center"><span class="bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center mr-4">1</span> Pilar 1: Experiência Visual</h4>
+                    <p class="text-gray-700 mb-8 italic border-l-4 border-gray-300 pl-4">Marcas como BetterLife utilizam princípios focados em eliminar qualquer dúvida antes do clique:</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-gray-50 p-6 rounded-xl">
+                            <h5 class="font-bold text-primary mb-3">1. Barra de Topo</h5>
+                            <p class="text-sm text-gray-700 mb-2">A primeira linha do site deve resolver as maiores objeções de compra antes mesmo da navegação:</p>
+                            <p class="text-sm text-gray-600 bg-white p-3 border border-gray-200 rounded">Exibição clara de parcelamento sem juros, regra de frete grátis e o selo de algodão legítimo.</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl">
+                            <h5 class="font-bold text-primary mb-3">2. Dobra Principal</h5>
+                            <p class="text-sm text-gray-700 mb-2">Em menos de 3 segundos, o visitante precisa entender: o que é, por que é melhor e qual é a vantagem imediata.</p>
+                            <ul class="text-sm text-gray-600 space-y-2 list-disc pl-4">
+                                <li><strong>Proposta de Valor em Destaque:</strong> 100% Algodão Brasileiro de Verdade · Novas estampas liberadas todo mês em Edição Final.</li>
+                                <li><strong>Condições Comerciais Visíveis:</strong> Preço parcelado em destaque (ex: em até 5x sem juros) e desconto explícito para pagamento via Pix.</li>
+                                <li><strong>Garantia:</strong> Teste por 15 Dias na Sua Cama · Sinta a maciez do algodão de verdade ou seu dinheiro de volta.</li>
+                                <li><strong>Botão de Ação Direta (CTA):</strong> Direcionamento direto para a categoria em destaque, sem textos vagos como "saiba mais".</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl">
+                            <h5 class="font-bold text-primary mb-3">3. Página de Produto</h5>
+                            <ul class="text-sm text-gray-600 space-y-3 list-disc pl-4">
+                                <li><strong>Fotos de Contexto e Detalhe:</strong> O consumidor compra o visual do quarto pronto e a segurança do toque. Mistura-se a foto da cama inteira arrumada com fotos macro (aproximadas) que mostram a trama do tecido e a costura.</li>
+                                <li><strong>Botão "Comprar" Fixo:</strong> Conforme a cliente rola a tela para ler medidas e detalhes, o botão de compra permanece fixo no rodapé da tela do celular, permitindo fechar o pedido a qualquer momento sem precisar voltar ao topo.</li>
+                                <li><strong>Calculadora de Frete Rápida:</strong> Campo de CEP limpo logo abaixo do preço com indicação visual de prazos e valores.</li>
+                                <li><strong>Garantia:</strong> Selos gráficos de "Garantia de 7 dias” E "Certificação de Algodão Brasileiro (ABR)" “Teste por 15 dias”</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pilar 2 -->
+                <div class="reveal bg-darkBg text-white rounded-3xl p-10 shadow-lg relative overflow-hidden">
+                    <div class="absolute left-0 top-0 w-full h-full bg-gradient-to-br from-primary/20 to-transparent pointer-events-none"></div>
+                    <h4 class="text-2xl font-bold mb-6 flex items-center z-10 relative"><span class="bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center mr-4">2</span> Pilar 2: Rastreamento</h4>
+                    <p class="text-gray-300 mb-8 z-10 relative">Tráfego pago sem rastreamento de eventos é desperdício de verba. As plataformas de anúncio (Meta Ads, Google Ads) dependem de dados em tempo real para encontrar pessoas com o perfil comprador exato.</p>
+                    
+                    <!-- Funnel Infographic CSS -->
+                    <div class="flex flex-col md:flex-row items-center justify-between mb-10 z-10 relative bg-black/30 p-6 rounded-2xl overflow-x-auto gap-4">
+                        <div class="text-center min-w-[120px]">
+                            <div class="bg-gray-700 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-2"><i class="fas fa-store text-2xl text-gray-300"></i></div>
+                            <p class="text-xs font-bold text-primary">PageView</p>
+                            <p class="text-[10px] text-gray-400">Visita</p>
+                        </div>
+                        <i class="fas fa-long-arrow-alt-right text-gray-500 hidden md:block"></i>
+                        <div class="text-center min-w-[120px]">
+                            <div class="bg-blue-900 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-2"><i class="fas fa-eye text-2xl text-blue-300"></i></div>
+                            <p class="text-xs font-bold text-primary">ViewContent</p>
+                            <p class="text-[10px] text-gray-400">Ver Produto</p>
+                        </div>
+                        <i class="fas fa-long-arrow-alt-right text-gray-500 hidden md:block"></i>
+                        <div class="text-center min-w-[120px]">
+                            <div class="bg-yellow-900 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-2"><i class="fas fa-cart-plus text-2xl text-yellow-300"></i></div>
+                            <p class="text-xs font-bold text-primary">AddToCart</p>
+                            <p class="text-[10px] text-gray-400">Add Carrinho</p>
+                        </div>
+                        <i class="fas fa-long-arrow-alt-right text-gray-500 hidden md:block"></i>
+                        <div class="text-center min-w-[120px]">
+                            <div class="bg-orange-900 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-2"><i class="fas fa-credit-card text-2xl text-orange-300"></i></div>
+                            <p class="text-xs font-bold text-primary">InitiateCheckout</p>
+                            <p class="text-[10px] text-gray-400">Início Pgto</p>
+                        </div>
+                        <i class="fas fa-long-arrow-alt-right text-gray-500 hidden md:block"></i>
+                        <div class="text-center min-w-[120px]">
+                            <div class="bg-green-900 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-2 shadow-[0_0_15px_#22c55e]">
+                                <i class="fas fa-check-circle text-2xl text-green-400"></i>
+                            </div>
+                            <p class="text-xs font-bold text-green-400">Purchase</p>
+                            <p class="text-[10px] text-gray-400">Compra Aprovada</p>
+                        </div>
+                    </div>
+
+                    <div class="z-10 relative">
+                        <h5 class="font-bold text-white mb-4">A Jornada de Eventos de Dados:</h5>
+                        <ul class="space-y-3 text-sm text-gray-300 list-disc pl-5">
+                            <li><strong>PageView (Visita):</strong> Alimenta o público de tráfego geral da marca para campanhas de reconhecimento institucional.</li>
+                            <li><strong>ViewContent (Visualização do Produto):</strong> Registra exatamente qual tamanho e estampa a pessoa olhou. Permite o Catálogo Dinâmico: a cliente vê nas redes sociais o anúncio com a foto exata daquele lençol que ela olhou minutos antes.</li>
+                            <li><strong>AddToCart (Adição ao Carrinho):</strong> Momento de alto interesse. Se ela não comprar, entra em uma campanha de remarketing focada em benefícios ou frete grátis.</li>
+                            <li><strong>InitiateCheckout (Início de Pagamento):</strong> O cliente mais quente da loja. O anúncio de remarketing foca em escassez ("Sua estampa em Edição Final está reservada por tempo limitado").</li>
+                            <li><strong>Purchase (Compra Aprovada):</strong> O evento mais valioso. Ele ensina a inteligência artificial das redes a buscar pessoas idênticas a quem acabou de comprar, além de excluir automaticamente o comprador recente dos anúncios de venda, evitando que a empresa queime dinheiro mostrando ofertas para quem já pagou.</li>
+                        </ul>
+                        <div class="mt-6 bg-white/10 p-4 rounded-lg border border-white/20">
+                            <strong>Configuração técnica necessária:</strong> Implementação da API de Conversões da Meta (<span class="tooltip text-primary">CAPI<span class="tooltiptext">Conversions API. Envia dados diretos do servidor.</span></span>) em conjunto com o Pixel e Google Analytics 4 (<span class="tooltip text-primary">GA4<span class="tooltiptext">Versão mais recente do Analytics do Google.</span></span>), garantindo envio de dados diretamente do servidor da loja, imune a bloqueadores de anúncios de celulares.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pilar 3 -->
+                <div class="reveal bg-white border border-gray-100 rounded-3xl p-10 shadow-lg relative">
+                    <h4 class="text-2xl font-bold text-darkBg mb-6 flex items-center"><span class="bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center mr-4">3</span> Pilar 3: Pré-Checkout</h4>
+                    <p class="text-gray-700 mb-8">Mais de 65% a 70% das pessoas que colocam produtos no carrinho não concluem o pagamento. Em vez de aceitar essa perda, o e-commerce moderno transforma o abandono em receita previsível.</p>
+                    
+                    <!-- Recovery Flow Visual -->
+                    <div class="bg-gray-50 rounded-xl p-6 mb-10 border border-gray-200 font-mono text-sm overflow-x-auto text-gray-700">
+<pre>
+[Cliente Clica em "Comprar"]
+             │
+             ▼
+[Passo 1: Nome, WhatsApp e E-mail] ──► <span class="text-green-600 font-bold">DADOS SALVOS NO SISTEMA</span>
+             │
+             ▼
+[Passo 2: Endereço e Frete]
+             │
+      Abandonou aqui?
+             │
+             ├──► 15 min: WhatsApp com foto da peça + Link do carrinho pronto
+             ├──► 2h:     E-mail destacando a garantia de satisfação
+             └──► 24h:    WhatsApp com condição de frete especial ou última chamada
+</pre>
+                    </div>
+
+                    <div class="space-y-8">
+                        <div>
+                            <h5 class="font-bold text-primary mb-2 text-lg">1. Captura Antecipada de Dados (Lead no Primeiro Passo)</h5>
+                            <p class="text-gray-700 mb-4">No primeiro segundo em que a cliente clica em "Comprar" ou "Avançar", a tela solicita apenas: Nome, E-mail e WhatsApp.</p>
+                            <img src="https://i.imgur.com/zjrXbrz.jpg" alt="Captura Antecipada" class="w-full max-w-md rounded-lg shadow-md lightbox-trigger cursor-zoom-in hover:-translate-y-1 transition-transform border border-gray-200">
+                        </div>
+                        
+                        <div>
+                            <h5 class="font-bold text-primary mb-2 text-lg">2. Checkout Transparente</h5>
+                            <p class="text-gray-700 mb-2">Elimina a necessidade de criar senhas longas, confirmar links por e-mail ou passar por 4 telas diferentes:<br>Nome, endereço, frete e pagamento (Pix ou Cartão) resolvidos em uma única página rápida.</p>
+                            <p class="text-gray-700"><strong>Pix com QR Code Dinâmico e "Copia e Cola" Imediato:</strong> A tela gera o código Pix na hora com botão de cópia fácil e confirmação visual de pagamento em segundos, reduzindo a desistência de boletos convencionais.</p>
+                        </div>
+
+                        <div>
+                            <h5 class="font-bold text-primary mb-2 text-lg">3. Automação de Recuperação via WhatsApp e E-mail</h5>
+                            <ul class="list-disc pl-5 space-y-4 text-gray-700 mb-4">
+                                <li><strong>Régua de 15 Minutos (WhatsApp):</strong> Mensagem humanizada e automática:<br><span class="italic bg-gray-100 p-2 rounded block mt-2 border-l-4 border-green-500">"Oi, [Nome]! Vi que você separou o Jogo de Cama [Estampa], mas não finalizou o pedido. Como nossas peças são em Edição Final e o estoque é limitado, guardei seu carrinho aqui para você não perder: [Link de 1 Clique]".</span></li>
+                                <li><strong>Régua de 2 Horas (E-mail):</strong> Foco em tirar objeções e segurança: envio de depoimentos de clientes sobre a maciez do algodão e a facilidade de troca.</li>
+                                <li><strong>Régua de 24 Horas (WhatsApp com Oferta de Fechamento):</strong> Se o motivo da saída foi o frete, um cupom dinâmico ou suporte direto de uma atendente pode ser acionado para concluir o pedido.</li>
+                            </ul>
+                            <img src="https://i.imgur.com/ZBtj8Ii.jpg" alt="Recuperação WhatsApp" class="w-full max-w-sm rounded-lg shadow-md lightbox-trigger cursor-zoom-in hover:-translate-y-1 transition-transform border border-gray-200">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pilar 4 -->
+                <div class="reveal bg-gradient-to-r from-gray-50 to-white border border-gray-100 rounded-3xl p-10 shadow-lg relative">
+                    <h4 class="text-2xl font-bold text-darkBg mb-6 flex items-center"><span class="bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center mr-4">4</span> Pilar 4: Maximização do Lucro</h4>
+                    <p class="text-gray-700 mb-6">Não basta apenas trazer novos clientes; a lucratividade reside em extrair mais receita de cada transação (<span class="tooltip font-bold text-primary">AOV<span class="tooltiptext">Average Order Value (Ticket Médio)</span></span>)</p>
+                    
+                    <div class="overflow-x-auto shadow-md rounded-xl mb-6">
+                        <table class="w-full text-left border-collapse bg-white">
+                            <thead>
+                                <tr class="bg-gray-100 text-darkBg">
+                                    <th class="p-4 font-bold border-b">Tática</th>
+                                    <th class="p-4 font-bold border-b">O que é</th>
+                                    <th class="p-4 font-bold border-b">Exemplo Prático de Aplicação</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-700 text-sm">
+                                <tr>
+                                    <td class="p-4 font-bold border-b whitespace-nowrap">Order Bump (Oferta de 1 Clique)</td>
+                                    <td class="p-4 border-b">Oferta complementar exibida dentro do carrinho ou checkout, que a cliente adiciona com apenas uma caixa de seleção.</td>
+                                    <td class="p-4 border-b">"Adicione 1 Par de Fronhas 100% Algodão avulsas por apenas R$ 29,90". Aumenta o ticket médio sem custo adicional de aquisição.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <img src="https://i.imgur.com/3Iq7N0E.jpg" alt="Order Bump" class="w-full max-w-md rounded-lg shadow-md lightbox-trigger cursor-zoom-in hover:-translate-y-1 transition-transform border border-gray-200">
+                </div>
+
+                <!-- Tabela de Aplicação Prática -->
+                <div class="reveal mt-12">
+                    <h4 class="text-2xl font-bold text-darkBg mb-6">Tabela de Aplicação Prática</h4>
+                    <div class="overflow-x-auto shadow-xl rounded-2xl border border-gray-200">
+                        <table class="w-full text-left border-collapse bg-white">
+                            <thead>
+                                <tr class="bg-darkBg text-white">
+                                    <th class="p-5 font-bold border-b border-gray-700 w-1/3">Elemento</th>
+                                    <th class="p-5 font-bold border-b border-gray-700 w-2/3">Aplicação Lojas Encanto</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-700 text-lg">
+                                <tr class="hover:bg-gray-50 border-b border-gray-100">
+                                    <td class="p-5 font-bold text-primary"><i class="far fa-calendar-alt mr-2"></i> Calendário de Novidades</td>
+                                    <td class="p-5">"Semana das Novidades": Divulgar que toda primeira semana do mês entram novas estampas de algodão no site</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 border-b border-gray-100">
+                                    <td class="p-5 font-bold text-primary"><i class="fas fa-tag mr-2"></i> Selo nas Fotos</td>
+                                    <td class="p-5">Selo colorido e legível no canto da foto: Edição Final · Poucas Peças.</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="p-5 font-bold text-primary"><i class="fas fa-grip-lines mr-2"></i> Barra no Topo do Site</td>
+                                    <td class="p-5">Direto ao ponto: "100% Algodão de verdade • Estampas novas todo mês • Frete grátis".</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Auditoria E-commerce -->
+            <div class="pt-24 mt-24 border-t-2 border-gray-200 reveal">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-extrabold text-red-600 mb-4"><i class="fas fa-stethoscope mr-3"></i> Auditoria de E-commerce</h2>
+                    <div class="inline-block bg-gray-100 p-4 rounded-xl shadow-sm text-left border border-gray-200">
+                        <p class="text-sm"><strong>Cliente:</strong> Lojas Encanto | <strong>Site:</strong> www.lojasencanto.com.br</p>
+                        <p class="text-sm"><strong>Data da Coleta de Dados:</strong> 09/10/2026 | <strong>Plataforma Atual:</strong> eCommerce.net (PHP proprietário) atrás do Cloudflare</p>
+                    </div>
+                </div>
+
+                <div class="bg-red-50 border-l-8 border-red-500 p-8 rounded-r-xl shadow-sm mb-12">
+                    <h3 class="text-2xl font-bold text-red-700 mb-4">1. O Diagnóstico Geral</h3>
+                    <p class="text-lg text-red-900">A Lojas Encanto possui excelente apelo comercial (enxovais 100% algodão com preço direto de fábrica). No entanto, a auditoria técnica comprovou que o site esconde os argumentos de venda, dificulta o pagamento do cliente e envia dados falsos para as ferramentas de anúncios do Google e Meta.</p>
+                </div>
+
+                <h3 class="text-3xl font-bold text-darkBg mb-8">2. Principais Impactos Negativos</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                    <!-- Impacto A -->
+                    <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-100 hover:shadow-xl transition-shadow">
+                        <h4 class="text-xl font-bold text-red-600 mb-3">A. Desperdício de Verba de Anúncios (Mensuração Falsa)</h4>
+                        <p class="mb-2"><strong>O Problema:</strong> O site está informando ao Google que "houve uma venda" toda vez que qualquer pessoa entra em qualquer página do site. Além disso, o Facebook/Instagram não consegue rastrear absolutamente nada.</p>
+                        <p class="mb-4"><strong>Impacto no Negócio:</strong> Investir em tráfego pago hoje é queimar dinheiro, pois os algoritmos do Google e do Facebook estarão aprendendo com sinais falsos de conversão.</p>
+                        <div class="bg-gray-100 p-4 rounded-lg text-sm text-gray-700">
+                            <strong>Evidências Técnicas:</strong>
+                            <ul class="list-disc pl-5 mt-2 space-y-1">
+                                <li>Tag do Google Ads (AW-860393613 / Container GTM-K76LQHK): Configurada com o gatilho global gtm.js, disparando uma conversão falsa com valor fixo 1 e moeda inválida "R$" em 100% das visualizações de página.</li>
+                                <li>Eventos Falsos: Os eventos <em>fazer_um_pedido</em> e <em>fazer_um_pedido2</em> no GA4 (G-DNSLX1RK9X) estão sendo importados para o Google Ads como vendas e inflam os relatórios ao disparar na mera navegação de produtos e no carrinho.</li>
+                                <li>Ausência do Meta Pixel e CAPI: Não existe nenhum rastreador do Meta (fbq, facebook.com/tr, _fbp ou _fbc) em nenhuma das 8 etapas do funil de compras.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Impacto B -->
+                    <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-100 hover:shadow-xl transition-shadow">
+                        <h4 class="text-xl font-bold text-red-600 mb-3">B. Barreiras no Checkout</h4>
+                        <p class="mb-2"><strong>O Problema:</strong> Para comprar um produto de R$ 50 a R$ 150, o site exige cadastro obrigatório demorado. Pior ainda: quando o cliente tenta pagar por boleto, o site trava com tela em branco.</p>
+                        <p class="mb-4"><strong>Impacto no Negócio:</strong> O cliente que decidiu comprar desiste devido ao excesso de campos ou acredita que a compra falhou após o erro e vai embora sem pagar.</p>
+                        <div class="bg-gray-100 p-4 rounded-lg text-sm text-gray-700">
+                            <strong>Evidências Concretas:</strong>
+                            <ul class="list-disc pl-5 mt-2 space-y-1">
+                                <li>Falta de Checkout como Convidado: O fluxo em <em>/cart_login</em> exige login ou cadastro completo em <em>/cadastro</em> com 7 campos obrigatórios (Nome, CPF, Data de Nascimento, Celular, E-mail, Senha e Confirmação de Senha) e com o autocomplete desativado (autocomplete="off").</li>
+                                <li>Erro HTTP 500 no Envio do Pedido (Tela em Branco): Na compra de teste realizada em 07/10/2026 (Pedido real nº 919 - Lençol Avulso Casal Liso 130 Fios, valor R$ 78,26), o envio do formulário (POST /content/class/pedidos_cadastro.php) respondeu com erro de servidor HTTP 500 e tela totalmente em branco, sem gerar confirmação, número de pedido ou código de boleto ao cliente.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Impacto Confusao Visual -->
+                    <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-100 hover:shadow-xl transition-shadow">
+                        <h4 class="text-xl font-bold text-red-600 mb-3">Confusão Visual</h4>
+                        <p class="mb-2"><strong>O Problema:</strong> As fotos dos produtos não acompanham a cor selecionada pelo cliente e as opções esgotadas frustram a navegação.</p>
+                        <p class="mb-4"><strong>Impacto no Negócio:</strong> Gera insegurança na compra, medo de receber o produto na cor errada e abandono de carrinho.</p>
+                        <div class="bg-gray-100 p-4 rounded-lg text-sm text-gray-700">
+                            <strong>Evidências Concretas:</strong>
+                            <ul class="list-disc pl-5 mt-2 space-y-2">
+                                <li>Foto Não Troca com a Cor: Ao selecionar a variação "Kaki" no Jogo de Cama Casal Liso 180 Fios, a imagem principal do produto e a miniatura do carrinho continuam exibindo a cor "Rosa".<br><em>Arquivo de Evidência: evidencias/05_carrinho_kaki_miniatura_rosa.jpg</em></li>
+                                <li>Botão COMPRAR Escondido: O botão de compra fica posicionado abaixo da dobra da tela (y=983 px no desktop e y=1656 px no mobile), exigindo rolagem extensa.</li>
+                                <li>Condições Comerciais Ocultas: A condição de parcelamento em "5x sem juros" só aparece oculta em um modal (display:none); o Pix não oferece desconto real; e a regra de frete grátis surge de surpresa no carrinho ao atingir R$ 458,10, sem estar anunciada no site.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Impacto Lentidao -->
+                    <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-100 hover:shadow-xl transition-shadow">
+                        <h4 class="text-xl font-bold text-red-600 mb-3">Lentidão</h4>
+                        <p class="mb-2"><strong>O Problema:</strong> O site é extremamente lento no celular, possui textos ilegíveis devido ao ciano da marca e carrega informações erradas no Google.</p>
+                        <p class="mb-4"><strong>Impacto no Negócio:</strong> Taxa de rejeição de usuários mobile e perda de tráfego orgânico qualificado no Google.</p>
+                        <div class="bg-gray-100 p-4 rounded-lg text-sm text-gray-700">
+                            <strong>Evidências Concretas:</strong>
+                            <ul class="list-disc pl-5 mt-2 space-y-1">
+                                <li>Velocidade de Carregamento (<span class="tooltip">LCP<span class="tooltiptext">Largest Contentful Paint. Tempo para renderizar o maior elemento visual.</span></span> Mobile de 13 a 15 segundos): Na página inicial (www.lojasencanto.com.br), o tempo de carregamento principal no celular leva entre 13,2s e 14,9s, causado por 3 banners gigantes e pesados (465 KB a 625 KB cada, sem dimensões reservadas).</li>
+                                <li>Páginas com Erro 500 no Sitemap: Das 190 URLs cadastradas no arquivo sitemap.xml para o Google indexar, 66 URLs (35% do sitemap) sob o caminho <em>/grupo/...</em> retornam Erro HTTP 500 (Página Quebrada).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Plano de Ação (Gantt/Timeline Style) -->
+                <h3 class="text-3xl font-bold text-darkBg mb-8 reveal">3. Plano de Ação</h3>
+                <div class="relative mb-16 reveal border-l-4 border-primary ml-4 pl-8 space-y-10">
+                    
+                    <div class="relative">
+                        <div class="absolute -left-[45px] top-1 bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-md z-10"><i class="fas fa-tools"></i></div>
+                        <h4 class="text-2xl font-bold text-darkBg mb-4">Onda 1: Correção de Gargalos Críticos</h4>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                            <ul class="list-disc pl-5 space-y-3 text-gray-700">
+                                <li><strong>Corrigir o Erro HTTP 500 no Envio do Pedido:</strong> Exigir que a fornecedora eCommerce.net corrija o endpoint <em>pedidos_cadastro.php</em> para que o cliente visualize a tela de confirmação do pedido e o boleto.</li>
+                                <li><strong>Pausar Conversão Falsa no Google Ads:</strong> Alterar a tag <em>GWAHCITc...</em> para secundária no Google Ads e remover a importação dos eventos falsos <em>fazer_um_pedido</em> no GA4 para parar de treinar os anúncios com dados errados.</li>
+                                <li><strong>Organização do Menu e Links Quebrados:</strong> Remover do menu e do sitemap as categorias vazias (Tapete, Manta Sherpa, Capa Sofá) e as 66 URLs com Erro 500.</li>
+                                <li><strong>Visibilidade das Ofertas:</strong> Exibir nas vitrines a informação de "5x de R$ X sem juros" e corrigir os títulos principais.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <div class="absolute -left-[45px] top-1 bg-darkBg text-white w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-md z-10"><i class="fas fa-rocket"></i></div>
+                        <h4 class="text-2xl font-bold text-darkBg mb-4">Onda 2: Reestruturação do Funil</h4>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                            <ul class="list-disc pl-5 space-y-3 text-gray-700">
+                                <li><strong>Instalação da Stack de Mensuração Correta:</strong> Implementar o Google Tag Manager (GTM) oficial, configurar o GA4 com eventos reais de e-commerce (view_item, add_to_cart, purchase), e instalar o Meta Pixel + CAPI com deduplicação de eventos.</li>
+                                <li><strong>Correção de UX e Troca de Fotos:</strong> Ajustar o sistema para que ao clicar na cor (ex: Kaki), a foto principal e a miniatura do carrinho troquem automaticamente para a cor correspondente.</li>
+                                <li><strong>Otimização de Velocidade Mobile:</strong> Substituir os banners pesados por versões mobile dedicadas (abaixo de 120 KB) para reduzir o tempo de carregamento de 13s para menos de 4s.</li>
+                                <li><strong>Correção de Contraste e Tipografia:</strong> Escurecer os textos em ciano para a cor teal #006B7A (garantindo leitura nítida e contraste de 6,2:1).</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Premissas Nova Plataforma -->
+                <h3 class="text-3xl font-bold text-darkBg mb-6 reveal">4. Premissas Obrigatórias para a Nova Plataforma de E-commerce (Tray + Bling)</h3>
+                <p class="text-gray-700 mb-8 reveal">Para que a migração para a plataforma Trey (integrada ao Bling) entregue a escalabilidade necessária para atingir a meta de R$ 500 mil/mês no digital, o novo sistema deve atender obrigatoriamente a 5 premissas:</p>
+                
+                <div class="overflow-x-auto shadow-lg rounded-2xl border border-gray-200 mb-16 reveal">
+                    <table class="w-full text-left border-collapse bg-white">
+                        <thead>
+                            <tr class="bg-gray-100 text-darkBg border-b-2 border-primary">
+                                <th class="p-5 font-bold w-1/3">Pilar</th>
+                                <th class="p-5 font-bold w-2/3">Premissa Obrigatória no Novo Sistema</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-700">
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="p-5 font-bold">1. Checkout Rápido (Convidado)</td>
+                                <td class="p-5">Permitir compra rápida informando apenas E-mail, CPF, Celular e CEP — sem exigir criação de senha no primeiro pedido.</td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="p-5 font-bold">2. Mensuração e Tracking Nativo</td>
+                                <td class="p-5">Integração nativa e verificada do Meta Pixel, CAPI e Google Ads Enhanced Conversions vinculada exclusivamente a pagamentos aprovados (purchase).</td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="p-5 font-bold">3. Integração Total de Estoque (ERP)</td>
+                                <td class="p-5">Sincronização automática do estoque via Bling/Datasul entre Loja Física, E-commerce e Marketplaces (Shopee/Mercado Livre).</td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="p-5 font-bold">4. Desempenho Mobile-First</td>
+                                <td class="p-5">Carregamento do site abaixo de 3 segundos no 4G, barra fixa de compra no celular e imagens otimizadas em formato WebP/AVIF.</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="p-5 font-bold">5. Feed de Produtos Estruturado</td>
+                                <td class="p-5">Gerar feed XML/JSON-LD automatizado com dados completos (ProductGroup, variações de cores, estoque e preço).</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Plano de Progressão (Gantt/Data Table Style) -->
+                <h3 class="text-3xl font-bold text-darkBg mb-6 reveal">Plano de Progressão de Verba de Mídia</h3>
+                <p class="text-gray-700 mb-6 font-semibold reveal">O crescimento divide-se em 4 fases</p>
+                <div class="overflow-x-auto shadow-2xl rounded-2xl reveal mb-16 bg-white border border-gray-200">
+                    <table class="w-full text-center border-collapse text-sm md:text-base whitespace-nowrap">
+                        <thead>
+                            <tr class="bg-gradient-to-r from-darkBg to-[#2a5585] text-white">
+                                <th class="p-4 font-bold border-b border-gray-600">Fase</th>
+                                <th class="p-4 font-bold border-b border-gray-600">Mês</th>
+                                <th class="p-4 font-bold border-b border-gray-600">Investimento em Mídia/Mês</th>
+                                <th class="p-4 font-bold border-b border-gray-600">Cliques Estimados (CPC Médio R$ 1,20)</th>
+                                <th class="p-4 font-bold border-b border-gray-600">Taxa de Conversão</th>
+                                <th class="p-4 font-bold border-b border-gray-600">Pedidos no Mês</th>
+                                <th class="p-4 font-bold border-b border-gray-600">Faturamento Projetado</th>
+                                <th class="p-4 font-bold border-b border-gray-600">ROAS Alvo</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-700 font-medium">
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="p-4 bg-gray-100/50">Fase 1: Validação</td>
+                                <td class="p-4">Mês 1 - 2</td>
+                                <td class="p-4 text-red-600 font-bold">R$ 5.000</td>
+                                <td class="p-4">~4.150 cliques</td>
+                                <td class="p-4">0,90%</td>
+                                <td class="p-4">~37 pedidos</td>
+                                <td class="p-4 text-green-600">R$ 6.000 a R$ 12.000</td>
+                                <td class="p-4 bg-green-50 text-green-800 font-bold">1,5 a 2,4</td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="p-4 bg-gray-100/50">Fase 2: Tração</td>
+                                <td class="p-4">Mês 3 - 5</td>
+                                <td class="p-4 text-red-600 font-bold">R$ 15.000</td>
+                                <td class="p-4">~12.500 cliques</td>
+                                <td class="p-4">1,10%</td>
+                                <td class="p-4">~137 pedidos</td>
+                                <td class="p-4 text-green-600">R$ 45.000 a R$ 65.000</td>
+                                <td class="p-4 bg-green-100 text-green-800 font-bold">3,0 a 4,3</td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="p-4 bg-gray-100/50">Fase 3: Aceleração</td>
+                                <td class="p-4">Mês 6 - 8</td>
+                                <td class="p-4 text-red-600 font-bold">R$ 40.000</td>
+                                <td class="p-4">~33.300 cliques</td>
+                                <td class="p-4">1,30%</td>
+                                <td class="p-4">~430 pedidos</td>
+                                <td class="p-4 text-green-600">R$ 150.000 a R$ 200.000</td>
+                                <td class="p-4 bg-green-200 text-green-900 font-bold">4,0 a 5,0</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="p-4 bg-gray-100/50">Fase 4: Escala</td>
+                                <td class="p-4">Mês 9 - 12+</td>
+                                <td class="p-4 text-red-600 font-bold">R$ 95.000</td>
+                                <td class="p-4">~79.000 cliques</td>
+                                <td class="p-4">1,50%</td>
+                                <td class="p-4">~1.180 pedidos</td>
+                                <td class="p-4 text-green-600 font-bold">R$ 500.000</td>
+                                <td class="p-4 bg-green-300 text-green-900 font-bold text-lg">5,2</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sessão 06: Roadmap -->
+    <section class="py-24 bg-gray-900 text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-primary opacity-5 blob" style="animation-duration: 15s;"></div>
+        <div class="container mx-auto px-6 max-w-7xl relative z-10 text-center reveal">
+            <h2 class="text-4xl md:text-5xl font-extrabold mb-12 text-gradient bg-clip-text text-transparent bg-gradient-to-r from-primary to-white">Roadmap</h2>
+            
+            <div class="inline-block relative group rounded-2xl overflow-hidden shadow-2xl hover:shadow-glow transition-all duration-300 cursor-zoom-in">
+                <img src="https://i.imgur.com/9tbw0bf.jpg" alt="Roadmap" class="w-full max-w-5xl h-auto object-cover lightbox-trigger transform group-hover:scale-[1.02] transition-transform">
+                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity pointer-events-none">
+                    <i class="fas fa-search-plus text-white text-5xl"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sessão 13: Conclusão -->
+    <section class="py-24 bg-white text-center reveal">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <div class="bg-primary/5 p-10 rounded-3xl border border-primary/20 shadow-lg">
+                <h2 class="text-3xl font-bold text-darkBg mb-6"><i class="fas fa-flag-checkered text-primary mr-3"></i> O QUE ACONTECEU ESSA SEMANA</h2>
+                <p class="text-xl text-gray-700 mb-10 italic">- Entendemos de forma mais aprofundada como está o seu marketing e da sua concorrência.</p>
+                
+                <h3 class="text-2xl font-bold text-darkBg mb-6 border-t border-gray-200 pt-8">PRÓXIMOS PASSOS:</h3>
+                <div class="inline-block bg-darkBg text-white text-lg font-semibold py-4 px-8 rounded-full shadow-xl hover:-translate-y-1 transition-transform">
+                    Entrega final do planejamento de execução junto com os artefatos comerciais
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer class="bg-[#E50914] text-white py-12">
+        <div class="container mx-auto px-6 flex flex-col items-center justify-center">
+            <p class="text-lg font-light mb-4">Produzido por:</p>
+            <img src="https://i.imgur.com/SU08Zb0.png" alt="V4 Logo Footer" class="h-12 hover:scale-110 transition-transform duration-300">
+        </div>
+    </footer>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="fixed inset-0 z-[100] bg-black/90 hidden items-center justify-center p-4 backdrop-blur-sm cursor-zoom-out transition-opacity">
+        <button id="lightbox-close" class="absolute top-6 right-6 text-white text-4xl hover:text-primary transition-colors focus:outline-none">&times;</button>
+        <img id="lightbox-img" src="" alt="Ampliada" class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl">
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Sticky Header Glassmorphism
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if(window.scrollY > 50) {
+                    header.classList.add('glass', 'shadow-md');
+                    header.classList.remove('bg-transparent', 'py-4');
+                    header.classList.add('py-2');
+                } else {
+                    header.classList.remove('glass', 'shadow-md', 'py-2');
+                    header.classList.add('bg-transparent', 'py-4');
+                }
+            });
+
+            // 2. Scroll Reveal Animations (Intersection Observer)
+            const reveals = document.querySelectorAll('.reveal');
+            const revealOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target); // Reveal only once
+                    }
+                });
+            }, revealOptions);
+            reveals.forEach(r => revealObserver.observe(r));
+
+            // 3. Audio Toggle para Vídeos Simulados (Reels)
+            const audioToggles = document.querySelectorAll('.audio-toggle');
+            audioToggles.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // O video deve ser o elemento anterior ao botao ou estar perto
+                    const video = this.previousElementSibling;
+                    if(video && video.tagName === 'VIDEO') {
+                        if(video.muted) {
+                            video.muted = false;
+                            this.innerHTML = '<i class="fas fa-volume-up"></i>';
+                            this.classList.replace('bg-black/60', 'bg-primary');
+                        } else {
+                            video.muted = true;
+                            this.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                            this.classList.replace('bg-primary', 'bg-black/60');
+                        }
+                    }
+                });
+            });
+
+            // 4. Line Clamp "Ver Mais"
+            document.querySelectorAll('.btn-read-more').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const textContainer = this.previousElementSibling;
+                    textContainer.classList.toggle('line-clamp-3');
+                    this.innerText = textContainer.classList.contains('line-clamp-3') ? 'Ver mais' : 'Ocultar';
+                });
+            });
+
+            // 5. Lightbox / Modal de Imagens
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            
+            document.querySelectorAll('.lightbox-trigger').forEach(img => {
+                img.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    lightboxImg.src = img.src;
+                    lightbox.classList.remove('hidden');
+                    lightbox.classList.add('flex');
+                    document.body.style.overflow = 'hidden'; // Previne scroll bg
+                });
+            });
+
+            lightbox.addEventListener('click', () => {
+                lightbox.classList.add('hidden');
+                lightbox.classList.remove('flex');
+                document.body.style.overflow = 'auto'; // Restaura scroll bg
+            });
+            
+        });
+    </script>
+</body>
+</html>
