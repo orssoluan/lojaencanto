@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesquisa de Mercado & Posicionamento | Lojas Encanto</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind Config & Custom CSS -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            cyan: '#00C8E2',
+                            dark: '#1B3859',
+                            red: '#E50914',
+                            light: '#F8FAFC'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #1B3859; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00C8E2; }
+
+        /* Smooth Scroll */
+        html { scroll-behavior: smooth; }
+
+        /* Animations */
+        @keyframes slowZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); }
+        }
+        .animate-slow-zoom {
+            animation: slowZoom 20s infinite alternate ease-in-out;
+        }
+
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob {
+            animation: blob 7s infinite;
+        }
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
+
+        /* Efeito Shine em botões */
+        .btn-shine {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-shine::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-20deg);
+            transition: all 0.5s;
+        }
+        .btn-shine:hover::after {
+            left: 150%;
+            transition: all 0.7s ease-in-out;
+        }
+
+        /* Scroll Reveal Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Glassmorphism */
+        .glass-header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-header.scrolled {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Tooltip */
+        .tooltip { position: relative; cursor: help; border-bottom: 1px dashed #00C8E2; color: #00C8E2; font-weight: 500; }
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%);
+            background: #1B3859; color: white; padding: 6px 10px; border-radius: 6px;
+            font-size: 12px; white-space: nowrap; opacity: 0; visibility: hidden;
+            transition: all 0.3s ease; z-index: 10;
+        }
+        .tooltip:hover::after { opacity: 1; visibility: visible; bottom: 130%; }
+
+        /* Line Clamp Toggle */
+        .line-clamp-box { transition: max-height 0.5s ease; overflow: hidden; max-height: 80px; }
+        .line-clamp-box.expanded { max-height: 1000px; }
+
+        /* Funnel Shapes */
+        .funnel-layer { transition: all 0.3s ease; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); }
+        .funnel-layer:hover { transform: scale(1.02) translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.2); z-index: 10; }
+    </style>
+</head>
+<body class="bg-brand-light text-gray-800 font-sans antialiased overflow-x-hidden">
+
+    <!-- HEADER -->
+    <header id="main-header" class="fixed w-full top-0 z-50 transition-all duration-300 glass-header py-3 px-6 lg:px-12">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <!-- Espaçador invisível para manter o logo centralizado -->
+            <div class="w-32 hidden md:block"></div>
+            
+            <!-- Logo Cliente (Centro) -->
+            <div class="flex-grow flex justify-center transform transition-transform hover:scale-105">
+                <img src="https://www.lojasencanto.com.br/uploads/lojasencanto/design/Logo15875864471251586443.webp" alt="Lojas Encanto" class="h-10 md:h-14 filter drop-shadow-md">
+            </div>
+            
+            <!-- Logo V4 (Direita) -->
+            <div class="w-32 flex justify-end transform transition-transform hover:scale-105">
+                <img src="https://brand.v4company.com/_next/image?url=%2Fimages%2Flogos%2Fsimbolo-company.webp&w=256&q=75" alt="V4 Company" class="h-8 md:h-10 grayscale opacity-60 hover:opacity-100 transition-opacity">
+            </div>
+        </div>
+    </header>
+
+    <!-- SESSÃO 01: HERO / CAPA -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?q=80&w=2071&auto=format&fit=crop" alt="Background" class="w-full h-full object-cover animate-slow-zoom brightness-[0.4]">
+        </div>
+        <div class="relative z-10 text-center px-4 reveal">
+            <h1 class="text-5xl md:text-7xl font-extrabold text-white leading-tight mb-6">
+                Pesquisa de Mercado <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan to-blue-300">& Posicionamento</span>
+            </h1>
+        </div>
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+        </div>
+    </section>
+
+    <!-- SESSÃO 02: SUMÁRIO -->
+    <section class="py-20 bg-white relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="text-center mb-12 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold text-brand-dark mb-4">SUMÁRIO</h2>
+                <div class="inline-flex items-center px-4 py-2 bg-brand-light border border-gray-200 rounded-full text-gray-600 shadow-sm">
+                    <svg class="w-5 h-5 mr-2 text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Duração Estimada: 1h30min
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 reveal">
+                <!-- Card Pesquisa -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-brand-cyan transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl group">
+                    <h3 class="text-2xl font-bold text-brand-dark mb-6 group-hover:text-brand-cyan transition-colors">Pesquisa de Mercado</h3>
+                    <ul class="space-y-4 text-gray-600">
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-cyan rounded-full mr-3"></span>Estudo dos seus concorrentes</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-cyan rounded-full mr-3"></span>Mercados atuais e potenciais</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-cyan rounded-full mr-3"></span>Público alvo mais assertivo</li>
+                    </ul>
+                </div>
+                <!-- Card Posicionamento -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-brand-dark transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl group">
+                    <h3 class="text-2xl font-bold text-brand-dark mb-6 group-hover:text-brand-dark transition-colors">Posicionamento</h3>
+                    <ul class="space-y-4 text-gray-600">
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-dark rounded-full mr-3"></span>Comparação do produto no mercado</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-dark rounded-full mr-3"></span>Seus diferenciais competitivos</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-dark rounded-full mr-3"></span>Sua PUV</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SESSÃO 03: SEU MERCADO -->
+    <section class="py-20 bg-gray-50 relative overflow-hidden">
+        <!-- Abstract Blobs -->
+        <div class="absolute top-0 -left-4 w-72 h-72 bg-brand-cyan rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob"></div>
+        <div class="absolute top-0 -right-4 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob animation-delay-2000"></div>
+
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+            <div class="reveal mb-12">
+                <h2 class="text-4xl font-bold text-brand-dark border-l-4 border-brand-cyan pl-4">Seu mercado</h2>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-10 items-center mb-16 reveal">
+                <!-- Coluna Esquerda: Banner Lojas Encanto -->
+                <div class="w-full rounded-xl overflow-hidden shadow-2xl cursor-pointer lightbox-trigger">
+                    <img src="https://www.lojasencanto.com.br/uploads/lojasencanto/banners/kit17867326391889326627.webp" alt="Banner Seu Mercado" class="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700">
+                </div>
+
+                <!-- Coluna Direita: Texto -->
+                <div class="prose max-w-none text-gray-700 text-lg leading-relaxed">
+                    <p><strong>Seu mercado:</strong> As lojas físicas tradicionais estão estagnadas, enquanto a expansão de vendas online são amplamente dominada pelos marketplaces (como Shopee e Mercado Livre), que concentram 80% de todas as vendas digitais. Contudo, esse ecossistema virtual é dominado por produtos sintéticos importados sob falsas promessas de algodão.</p>
+                    
+                    <p>Segundo dados do <span class="tooltip" data-tooltip="Instituto de Estudos e Marketing Industrial">IEMI</span> e da <span class="tooltip" data-tooltip="Associação Brasileira da Indústria Têxtil">ABIT</span>, no período pós -covid 19, entre 2021 e 2022, enquanto todos os canais físicos de Cama, Mesa e Banho registraram queda de volume de -5,0% à -6,7%, as vendas online foi o único canal em crescimento <strong class="text-green-600">+7,8%</strong>, acumulando uma alta de <strong class="text-green-600">+167%</strong> no ciclo de 2019 a 2024.</p>
+
+                    <p>No entanto, essa expansão digital foi impulsionada por um salto anual de <strong class="text-red-500">+53,5%</strong> na entrada de produtos têxteis importados, predominantemente poliéster e micropercal, que inundaram as plataformas de marketplace com preços de entrada na faixa de R$ 55 (conforme dados mapeados via <span class="tooltip" data-tooltip="Plataforma de análise de e-commerce">Nubimetrics/Anymarket</span>).</p>
+                </div>
+            </div>
+
+            <div class="mt-16 reveal">
+                <h3 class="text-2xl font-bold text-brand-dark mb-8 text-center">Consequência estratégicas:</h3>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Consequência 1 -->
+                    <div class="bg-white p-6 rounded-xl shadow-md hover:-translate-y-1 transition-transform relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-brand-cyan text-white w-10 h-10 flex items-center justify-center rounded-bl-xl font-bold">1</div>
+                        <p class="text-gray-700 mt-2">Pesquisas revelam que 68% dos abandonos de carrinho se concentram na etapa de preenchimento dos dados de envio, e entre 60% e 93% dos clientes admitem desistir quando há valor de frete. Um frete R$ 56,92 para região sul em um jogo de R$ 193,40 trava a venda no site. Enquanto o Mercado Livre oferece frete grátis na simulação de um item de R$ 218.</p>
+                        <div class="mt-4 rounded-lg overflow-hidden shadow-sm lightbox-trigger cursor-pointer border border-gray-100">
+                            <img src="https://imgur.com/1gD6v6n.png" alt="Comparativo de Frete" class="w-full h-auto object-cover hover:scale-105 transition-transform">
+                        </div>
+                    </div>
+
+                    <!-- Consequência 2 -->
+                    <div class="bg-white p-6 rounded-xl shadow-md hover:-translate-y-1 transition-transform relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-brand-cyan text-white w-10 h-10 flex items-center justify-center rounded-bl-xl font-bold">2</div>
+                        <p class="text-gray-700 mt-2">A gestão manual de estoque expõe a operação a cancelamentos e punições no ranking dos marketplaces. Controlar em planilha sem integração automática entre a loja física e os canais digitais gera vendas duplicadas e rupturas. A implantação de um <span class="tooltip" data-tooltip="Sistema de Gestão Empresarial">ERP</span> em nuvem integração entre às plataformas (e-commerce / marktplace / loja fisica) é o pré-requisito.</p>
+                    </div>
+
+                    <!-- Consequência 3 -->
+                    <div class="bg-white p-6 rounded-xl shadow-md hover:-translate-y-1 transition-transform relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-brand-cyan text-white w-10 h-10 flex items-center justify-center rounded-bl-xl font-bold">3</div>
+                        <p class="text-gray-700 mt-2">Nos marketplaces, a decisão de compra é pela conveniência logística e não apenas pelo preço da peça. A cliente prefere pagar R$ 218,49 no Mercado Livre com envio rápido no Full do que R$ 193,40 no site próprio e esperar 10 dias de entrega.</p>
+                    </div>
+
+                    <!-- Consequência 4 -->
+                    <div class="bg-white p-6 rounded-xl shadow-md hover:-translate-y-1 transition-transform relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-brand-cyan text-white w-10 h-10 flex items-center justify-center rounded-bl-xl font-bold">4</div>
+                        <p class="text-gray-700 mt-2">Vendas online na loja online própria ou e-commerce necessitam de tráfego pago. Sem isso, não tem resultado. Porém, é premissa operar com <span class="tooltip" data-tooltip="Google Analytics 4">GA4</span> e com tags de conversão para criação de públicos de remarketing para recuperar quem abandonou o carrinho. Migrar o e-commerce para uma plataforma moderna como a Tray corrige a usabilidade no checkout e permite mensurar o custo de aquisição com precisão de dados.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SESSÃO 04: TAMANHO DE MERCADO (FUNIL) -->
+    <section class="py-20 bg-brand-dark text-white relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 reveal">
+            <h2 class="text-4xl font-bold mb-16 text-center text-transparent bg-clip-text bg-gradient-to-r from-white to-brand-cyan">Definição do Tamanho de Mercado</h2>
+
+            <div class="flex flex-col items-center w-full max-w-4xl mx-auto space-y-6">
+                
+                <!-- TAM -->
+                <div class="w-full bg-[#0091a4] shadow-2xl p-8 text-center funnel-layer relative overflow-hidden group cursor-default">
+                    <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-5 transition-opacity"></div>
+                    <h3 class="text-3xl font-extrabold mb-1">TAM</h3>
+                    <p class="text-sm uppercase tracking-wider mb-2 opacity-80">Mercado Total Endereçável</p>
+                    <p class="text-2xl font-bold text-yellow-300 mb-6">R$ 14,25 bi a R$ 28,00 bi / ano</p>
+                    <div class="bg-black bg-opacity-20 p-5 rounded-lg text-sm text-left backdrop-blur-sm max-w-3xl mx-auto border border-white/10">
+                        <strong class="text-white">Contexto Brasil:</strong> O setor no Brasil movimenta mais de R$ 28 bilhões anuais, sendo que o segmento específico de artigos da linha cama exerce papel predominantemente forte, concentrando 38,2% da receita total gerada pelo varejo do setor, o que equivale a R$ 14,25 bilhões anuais.
+                    </div>
+                </div>
+
+                <!-- SAM -->
+                <div class="w-full md:w-[85%] bg-[#00adc4] shadow-2xl p-8 text-center funnel-layer relative overflow-hidden group cursor-default">
+                    <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-5 transition-opacity"></div>
+                    <h3 class="text-3xl font-extrabold mb-1">SAM</h3>
+                    <p class="text-sm uppercase tracking-wider mb-2 opacity-80">Mercado Disponível e Atendível</p>
+                    <p class="text-2xl font-bold text-yellow-300 mb-6">R$ 560,0 mi a R$ 1,70 bi / ano</p>
+                    <div class="bg-black bg-opacity-20 p-4 rounded-lg text-sm backdrop-blur-sm max-w-2xl mx-auto border border-white/10">
+                        <strong class="text-white">Fatores considerados:</strong> Foco exclusivo em vendas online
+                    </div>
+                </div>
+
+                <!-- SOM -->
+                <div class="w-full md:w-[70%] bg-[#00C8E2] shadow-2xl p-8 text-center funnel-layer relative overflow-hidden group cursor-default">
+                    <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-5 transition-opacity"></div>
+                    <h3 class="text-3xl font-extrabold mb-1">SOM</h3>
+                    <p class="text-sm uppercase tracking-wider mb-2 opacity-80 text-brand-dark font-semibold">Mercado Alcançável e Obtível</p>
+                    <p class="text-2xl font-bold text-brand-dark mb-6 bg-white inline-block px-4 py-1 rounded-full">R$ 6,0 mi a R$ 15,0 mi / ano</p>
+                    <div class="bg-black bg-opacity-10 p-5 rounded-lg text-sm text-brand-dark font-medium backdrop-blur-sm text-left max-w-xl mx-auto border border-black/10">
+                        <strong>Fatores considerados:</strong> Metade faturamento digital de R$ 500.000/mês (R$ 6,0 milhões/ano), representando a captura de 0,35% a 1,07% do SAM.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SESSÃO 05: SOBRE A META -->
+    <section class="py-20 bg-white relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 reveal">
+            <h2 class="text-4xl font-bold text-brand-dark mb-6 border-l-4 border-brand-cyan pl-4">Sobre a META</h2>
+            
+            <div class="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-10 text-lg text-gray-700 shadow-inner">
+                A meta de <strong class="text-green-600">R$ 500 mil</strong> é totalmente viável perante o mercado, pois representa apenas 0,4% do e-commerce brasileiro de roupa de cama, porém, o verdadeiro desafio é criar robustez operacional entre a estrutura atual e o nível de execução exigido para esse volume.
+            </div>
+
+            <div class="overflow-x-auto rounded-xl shadow-xl">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-brand-dark text-white">
+                            <th class="py-4 px-6 font-semibold uppercase text-sm">Operacional</th>
+                            <th class="py-4 px-6 font-semibold uppercase text-sm bg-gray-700">Situação Atual</th>
+                            <th class="py-4 px-6 font-semibold uppercase text-sm bg-brand-cyan text-brand-dark">Exigência para R$ 500k/mês</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 bg-white">
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="py-4 px-6 font-medium text-gray-900 flex items-center"><svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>Volume de Pedidos</td>
+                            <td class="py-4 px-6 text-gray-500">~1 pedido/dia no e-commerce próprio</td>
+                            <td class="py-4 px-6 text-brand-dark font-bold bg-[#e6f9fc]">99 a 152 pedidos/dia</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="py-4 px-6 font-medium text-gray-900 flex items-center"><svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>Controle de Estoque</td>
+                            <td class="py-4 px-6 text-gray-500">Planilha manual</td>
+                            <td class="py-4 px-6 text-brand-dark font-bold bg-[#e6f9fc]">ERP Bling em nuvem integrado com Tray</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="py-4 px-6 font-medium text-gray-900 flex items-center"><svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>Investimento em Mídia</td>
+                            <td class="py-4 px-6 text-gray-500">R$ 0,00</td>
+                            <td class="py-4 px-6 text-brand-dark font-bold bg-[#e6f9fc]">Iniciar com pelo menos 10k mês e ir escalando 20% conforme resultados até bater 80k mês</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="py-4 px-6 font-medium text-gray-900 flex items-center"><svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>Expedição e Logística</td>
+                            <td class="py-4 px-6 text-gray-500">Terceirizada via Correios</td>
+                            <td class="py-4 px-6 text-brand-dark font-bold bg-[#e6f9fc]">Operação preparada para 100+ despachos/dia e operadores logisticos privados</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="py-4 px-6 font-medium text-gray-900 flex items-center"><svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>CRM e Recompra</td>
+                            <td class="py-4 px-6 text-gray-500">Inexistente</td>
+                            <td class="py-4 px-6 text-brand-dark font-bold bg-[#e6f9fc]">Base ativa com réguas automatizadas de envios de ofertas</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- SESSÃO 06: JOBS TO BE DONE -->
+    <section class="py-20 bg-gray-50 relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 reveal">
+            <h2 class="text-4xl font-bold text-brand-dark mb-12 text-center">Jobs To Be Done</h2>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Situação -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-gray-400 flex flex-col justify-between">
+                    <div>
+                        <div class="text-gray-400 mb-4"><svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg></div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Situação</h3>
+                        <div class="line-clamp-box text-gray-600 italic">"Quando preciso renovar as roupas de cama da minha casa para garantir uma boa noite de sono para a família e deixar o quarto bonito..."</div>
+                    </div>
+                    <button class="mt-4 text-brand-cyan font-semibold hover:underline text-sm toggle-clamp">Ver mais</button>
+                </div>
+
+                <!-- Resultado -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-green-500 transform md:-translate-y-4 flex flex-col justify-between">
+                    <div>
+                        <div class="text-green-500 mb-4"><svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg></div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Resultado Desejado</h3>
+                        <div class="line-clamp-box text-gray-600 italic">"...eu quero comprar jogos de lençol confeccionados em 100% algodão de verdade, com toque macio, conforto térmico e estampas exclusivas a um preço justo..."</div>
+                    </div>
+                    <button class="mt-4 text-brand-cyan font-semibold hover:underline text-sm toggle-clamp">Ver mais</button>
+                </div>
+
+                <!-- Restrição -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-red-500 flex flex-col justify-between">
+                    <div>
+                        <div class="text-red-500 mb-4"><svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg></div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Restrição</h3>
+                        <div class="line-clamp-box text-gray-600 italic">"...mas o medo de ser enganada por falsos 100% algodão que na verdade são poliéster, somado ao valor de frete, me trava de fechar a compra."</div>
+                    </div>
+                    <button class="mt-4 text-brand-cyan font-semibold hover:underline text-sm toggle-clamp">Ver mais</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SESSÃO 07: ANÁLISE CONCORRENTES -->
+    <section class="py-20 bg-brand-dark relative text-white">
+        <div class="max-w-[95%] mx-auto px-4 reveal">
+            <h2 class="text-4xl font-bold mb-10 text-center text-transparent bg-clip-text bg-gradient-to-r from-white to-brand-cyan">Análise de presença digital dos concorrentes</h2>
+            <p class="text-center text-gray-400 mb-6 text-sm flex items-center justify-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                Arraste para os lados para ver a tabela completa
+            </p>
+
+            <!-- Tabela 1 -->
+            <div class="overflow-x-auto rounded-xl shadow-2xl mb-12 pb-4 cursor-grab active:cursor-grabbing hide-scrollbar" id="table1">
+                <table class="w-full text-left border-collapse min-w-[800px]">
+                    <thead>
+                        <tr class="bg-gray-800 text-brand-cyan text-sm uppercase tracking-wide border-b border-gray-700">
+                            <th class="py-4 px-6 font-semibold sticky left-0 bg-gray-800 z-10 shadow-[2px_0_5px_rgba(0,0,0,0.2)]">Concorrente</th>
+                            <th class="py-4 px-6 font-semibold">Relação</th>
+                            <th class="py-4 px-6 font-semibold">Acessos E-commerce</th>
+                            <th class="py-4 px-6 font-semibold">Plataforma</th>
+                            <th class="py-4 px-6 font-semibold">Instagram Seguidores</th>
+                            <th class="py-4 px-6 font-semibold">Google Ads</th>
+                            <th class="py-4 px-6 font-semibold">Meta Ads</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-700 bg-gray-900 text-gray-300">
+                        <tr class="hover:bg-gray-800 transition-colors">
+                            <td class="py-3 px-6 font-medium text-white sticky left-0 bg-gray-900 shadow-[2px_0_5px_rgba(0,0,0,0.2)] group-hover:bg-gray-800">Karsten</td>
+                            <td class="py-3 px-6"><span class="bg-blue-900 text-blue-200 text-xs px-2 py-1 rounded">Inspiração</span></td>
+                            <td class="py-3 px-6">652.000</td><td class="py-3 px-6">VTEX</td><td class="py-3 px-6">862.000</td><td class="py-3 px-6">600</td><td class="py-3 px-6">45</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800 transition-colors">
+                            <td class="py-3 px-6 font-medium text-white sticky left-0 bg-gray-900 shadow-[2px_0_5px_rgba(0,0,0,0.2)]">Hoomy</td>
+                            <td class="py-3 px-6"><span class="bg-blue-900 text-blue-200 text-xs px-2 py-1 rounded">Inspiração</span></td>
+                            <td class="py-3 px-6">226.000</td><td class="py-3 px-6">Shopify</td><td class="py-3 px-6">130.800</td><td class="py-3 px-6">500</td><td class="py-3 px-6">360</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800 transition-colors">
+                            <td class="py-3 px-6 font-medium text-white sticky left-0 bg-gray-900 shadow-[2px_0_5px_rgba(0,0,0,0.2)]">Casa Almeida / Buddemeyer</td>
+                            <td class="py-3 px-6"><span class="bg-blue-900 text-blue-200 text-xs px-2 py-1 rounded">Inspiração</span></td>
+                            <td class="py-3 px-6">86.000</td><td class="py-3 px-6">Wake Commerce</td><td class="py-3 px-6">116.000</td><td class="py-3 px-6">200</td><td class="py-3 px-6">0</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800 transition-colors">
+                            <td class="py-3 px-6 font-medium text-white sticky left-0 bg-gray-900 shadow-[2px_0_5px_rgba(0,0,0,0.2)]">Emporio do Lençol</td>
+                            <td class="py-3 px-6"><span class="bg-red-900 text-red-200 text-xs px-2 py-1 rounded">Concorrente</span></td>
+                            <td class="py-3 px-6">18.500</td><td class="py-3 px-6">VTEX</td><td class="py-3 px-6">19.000</td><td class="py-3 px-6">0</td><td class="py-3 px-6">0</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800 transition-colors">
+                            <td class="py-3 px-6 font-medium text-white sticky left-0 bg-gray-900 shadow-[2px_0_5px_rgba(0,0,0,0.2)]">Enxovais Monte Santo</td>
+                            <td class="py-3 px-6"><span class="bg-red-900 text-red-200 text-xs px-2 py-1 rounded">Concorrente</span></td>
+                            <td class="py-3 px-6">6.700</td><td class="py-3 px-6">Shopify</td><td class="py-3 px-6">25.500</td><td class="py-3 px-6">0</td><td class="py-3 px-6">1</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800 transition-colors">
+                            <td class="py-3 px-6 font-medium text-white sticky left-0 bg-gray-900 shadow-[2px_0_5px_rgba(0,0,0,0.2)]">Shop Casa Rosa</td>
+                            <td class="py-3 px-6"><span class="bg-red-900 text-red-200 text-xs px-2 py-1 rounded">Concorrente</span></td>
+                            <td class="py-3 px-6">3.800</td><td class="py-3 px-6">N/A</td><td class="py-3 px-6">185.000</td><td class="py-3 px-6">0</td><td class="py-3 px-6">27</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800 transition-colors">
+                            <td class="py-3 px-6 font-medium text-white sticky left-0 bg-gray-900 shadow-[2px_0_5px_rgba(0,0,0,0.2)]">REI DAS TOALHAS</td>
+                            <td class="py-3 px-6"><span class="bg-red-900 text-red-200 text-xs px-2 py-1 rounded">Concorrente</span></td>
+                            <td class="py-3 px-6">2.400</td><td class="py-3 px-6">Shopify</td><td class="py-3 px-6">52.900</td><td class="py-3 px-6">26</td><td class="py-3 px-6">5</td>
+                        </tr>
+                        <tr class="hover:bg-gray-700 bg-gray-800 transition-colors border-l-4 border-brand-cyan">
+                            <td class="py-3 px-6 font-bold text-brand-cyan sticky left-0 bg-gray-800 shadow-[2px_0_5px_rgba(0,0,0,0.2)]">Loja Encanto</td>
+                            <td class="py-3 px-6"><span class="bg-gray-700 text-gray-300 text-xs px-2 py-1 rounded">N/A</span></td>
+                            <td class="py-3 px-6 font-bold text-white">2.400</td><td class="py-3 px-6 font-bold text-white">eCommerce-net</td><td class="py-3 px-6 font-bold text-white">9.847</td><td class="py-3 px-6 font-bold text-white">0</td><td class="py-3 px-6 font-bold text-white"></td>
+                        </tr>
+                        <tr class="hover:bg-gray-800 transition-colors">
+                            <td class="py-3 px-6 font-medium text-white sticky left-0 bg-gray-900 shadow-[2px_0_5px_rgba(0,0,0,0.2)]">Lem Casa enxovais</td>
+                            <td class="py-3 px-6"><span class="bg-red-900 text-red-200 text-xs px-2 py-1 rounded">Concorrente</span></td>
+                            <td class="py-3 px-6">154</td><td class="py-3 px-6">N/A</td><td class="py-3 px-6">14.400</td><td class="py-3 px-6">0</td><td class="py-3 px-6">0</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800 transition-colors">
+                            <td class="py-3 px-6 font-medium text-white sticky left-0 bg-gray-900 shadow-[2px_0_5px_rgba(0,0,0,0.2)]">Tamires enxovais</td>
+                            <td class="py-3 px-6"><span class="bg-red-900 text-red-200 text-xs px-2 py-1 rounded">Concorrente</span></td>
+                            <td class="py-3 px-6">0</td><td class="py-3 px-6">FácilZap</td><td class="py-3 px-6">176.000</td><td class="py-3 px-6">0</td><td class="py-3 px-6">0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Tabela 2 -->
+            <div class="overflow-x-auto rounded-xl shadow-2xl cursor-grab active:cursor-grabbing pb-4" id="table2">
+                <table class="w-full text-left border-collapse min-w-[900px]">
+                    <thead>
+                        <tr class="bg-gray-800 text-brand-cyan text-sm uppercase tracking-wide border-b border-gray-700">
+                            <th class="py-4 px-6 font-semibold sticky left-0 bg-gray-800 z-10 shadow-[2px_0_5px_rgba(0,0,0,0.2)]">Nome da Loja</th>
+                            <th class="py-4 px-6 font-semibold">Relação</th>
+                            <th class="py-4 px-6 font-semibold">Selo</th>
+                            <th class="py-4 px-6 font-semibold">Tempo na Shopee</th>
+                            <th class="py-4 px-6 font-semibold">Produtos</th>
+                            <th class="py-4 px-6 font-semibold">Seguidores</th>
+                            <th class="py-4 px-6 font-semibold">Avaliação Geral</th>
+                            <th class="py-4 px-6 font-semibold">Taxa de Resposta do Chat</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-700 bg-gray-900 text-gray-300">
+                        <tr class="hover:bg-gray-800 transition-colors">
+                            <td class="py-3 px-6 font-medium text-white sticky left-0 bg-gray-900 shadow-[2px_0_5px_rgba(0,0,0,0.2)]">Emporio do Lençol</td>
+                            <td class="py-3 px-6"><span class="bg-red-900 text-red-200 text-xs px-2 py-1 rounded">Concorrente</span></td>
+                            <td class="py-3 px-6 text-center text-red-500 font-bold">x</td>
+                            <td class="py-3 px-6">3 anos</td><td class="py-3 px-6">1900</td><td class="py-3 px-6">3500</td><td class="py-3 px-6 text-yellow-400 font-bold">7,2 mil</td><td class="py-3 px-6">Dentro de minutos</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800 transition-colors">
+                            <td class="py-3 px-6 font-medium text-white sticky left-0 bg-gray-900 shadow-[2px_0_5px_rgba(0,0,0,0.2)]">Buddemeyer</td>
+                            <td class="py-3 px-6"><span class="bg-blue-900 text-blue-200 text-xs px-2 py-1 rounded">Inspiração</span></td>
+                            <td class="py-3 px-6 text-center text-red-500 font-bold">x</td>
+                            <td class="py-3 px-6">5 Anos</td><td class="py-3 px-6">420</td><td class="py-3 px-6">212800</td><td class="py-3 px-6 text-yellow-400 font-bold">34,5 mil</td><td class="py-3 px-6">Poucas horas</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- SESSÃO 08: SEGMENTAÇÃO -->
+    <section class="py-20 bg-white relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 reveal">
+            <h2 class="text-4xl font-bold text-brand-dark mb-12 border-l-4 border-brand-cyan pl-4">Segmentação do Cliente Ideal</h2>
+            
+            <div class="grid md:grid-cols-2 gap-10">
+                <!-- Img 1 -->
+                <div>
+                    <h3 class="text-xl font-bold text-gray-700 mb-4">Valor percebido pelo cliente</h3>
+                    <div class="rounded-xl overflow-hidden shadow-lg lightbox-trigger cursor-pointer transform transition hover:scale-[1.02]">
+                        <img src="https://imgur.com/szh1AJu.png" alt="Valor percebido pelo cliente" class="w-full h-auto object-cover">
+                    </div>
+                </div>
+                <!-- Img 2 -->
+                <div>
+                    <h3 class="text-xl font-bold text-gray-700 mb-4">Onde podemos atuar</h3>
+                    <div class="rounded-xl overflow-hidden shadow-lg lightbox-trigger cursor-pointer transform transition hover:scale-[1.02]">
+                        <img src="https://imgur.com/3OKQvgU.png" alt="Onde podemos atuar" class="w-full h-auto object-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SESSÃO 10 (Persona conforme prompt) -->
+    <section class="py-20 bg-gray-50 relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 reveal">
+            <h2 class="text-4xl font-bold text-brand-dark mb-12 text-center">Persona</h2>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- ICP Primário -->
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+                    <div class="bg-brand-cyan text-white p-6 text-center">
+                        <h3 class="text-2xl font-bold">ICP Primário — Classe C</h3>
+                    </div>
+                    <div class="p-6">
+                        <dl class="divide-y divide-gray-100 text-sm md:text-base">
+                            <div class="py-3 grid grid-cols-3 gap-4"><dt class="font-bold text-gray-600">Perfil</dt><dd class="col-span-2 text-gray-800">Mulher, 30–55 anos,</dd></div>
+                            <div class="py-3 grid grid-cols-3 gap-4"><dt class="font-bold text-gray-600">Classe social</dt><dd class="col-span-2 text-gray-800">C — renda familiar R$ 2.800–7.000</dd></div>
+                            <div class="py-3 grid grid-cols-3 gap-4"><dt class="font-bold text-gray-600">Onde compra</dt><dd class="col-span-2 text-gray-800">Shopee e Mercado Livre, pelo celular, à noite</dd></div>
+                            <div class="py-3 grid grid-cols-3 gap-4"><dt class="font-bold text-gray-600">Gatilho</dt><dd class="col-span-2 text-gray-800">Troca de enxoval, mudança, casamento, presente, data comemorativa, cama nova</dd></div>
+                            <div class="py-3 grid grid-cols-3 gap-4"><dt class="font-bold text-gray-600">Sensibilidade a preço</dt><dd class="col-span-2 font-bold text-red-500">Altíssima</dd></div>
+                            <div class="py-3 grid grid-cols-3 gap-4"><dt class="font-bold text-gray-600">Ticket aceito</dt><dd class="col-span-2 text-gray-800">R$ 60–150 por jogo de cama</dd></div>
+                            <div class="py-3 grid grid-cols-3 gap-4"><dt class="font-bold text-gray-600">Forma de pagamento</dt><dd class="col-span-2 text-gray-800">Cartão parcelado</dd></div>
+                            <div class="py-3 grid grid-cols-3 gap-4"><dt class="font-bold text-gray-600">Prova que convence</dt><dd class="col-span-2 text-gray-800">Reputação do vendedor · nº de vendas · avaliações com foto · frete e prazo</dd></div>
+                        </dl>
+                    </div>
+                </div>
+
+                <!-- ICP Secundário -->
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+                    <div class="bg-brand-dark text-white p-6 text-center">
+                        <h3 class="text-2xl font-bold">ICP Secundário — Classe B</h3>
+                    </div>
+                    <div class="p-6">
+                        <dl class="divide-y divide-gray-100 text-sm md:text-base">
+                            <div class="py-3 grid grid-cols-3 gap-4"><dt class="font-bold text-gray-600">Perfil</dt><dd class="col-span-2 text-gray-800">Mulher, 28–45, casa própria ou apartamento recém-montado</dd></div>
+                            <div class="py-3 grid grid-cols-3 gap-4"><dt class="font-bold text-gray-600">Classe social</dt><dd class="col-span-2 text-gray-800">B</dd></div>
+                            <div class="py-3 grid grid-cols-3 gap-4"><dt class="font-bold text-gray-600">Onde compra</dt><dd class="col-span-2 text-gray-800">Google → site da marca; Instagram como descoberta</dd></div>
+                            <div class="py-3 grid grid-cols-3 gap-4"><dt class="font-bold text-gray-600">Gatilho</dt><dd class="col-span-2 text-gray-800">Insatisfação com a qualidade do que comprou barato; busca por "algodão de verdade"</dd></div>
+                            <div class="py-3 grid grid-cols-3 gap-4"><dt class="font-bold text-gray-600">Sensibilidade a preço</dt><dd class="col-span-2 font-bold text-yellow-500">Média</dd></div>
+                            <div class="py-3 grid grid-cols-3 gap-4"><dt class="font-bold text-gray-600">Ticket aceito</dt><dd class="col-span-2 text-gray-800">R$ 180–400</dd></div>
+                            <div class="py-3 grid grid-cols-3 gap-4"><dt class="font-bold text-gray-600">Prova que convence</dt><dd class="col-span-2 text-gray-800">Composição, contagem de fios, origem do algodão, certificação, textura</dd></div>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SESSÃO 09: JORNADA DE COMPRA -->
+    <section class="py-20 bg-white relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 reveal">
+            <h2 class="text-4xl font-bold text-brand-dark mb-12 border-l-4 border-brand-cyan pl-4">Jornada de compra</h2>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse min-w-[900px]">
+                    <thead>
+                        <tr class="bg-gray-100 text-gray-600 text-sm uppercase tracking-wider">
+                            <th class="py-4 px-6 font-bold border-b-2 border-brand-cyan rounded-tl-lg">Etapa</th>
+                            <th class="py-4 px-6 font-bold border-b-2 border-brand-cyan">Estado mental</th>
+                            <th class="py-4 px-6 font-bold border-b-2 border-brand-cyan">Canal</th>
+                            <th class="py-4 px-6 font-bold border-b-2 border-brand-cyan text-brand-cyan">Intervenção Lojas Encanto</th>
+                            <th class="py-4 px-6 font-bold border-b-2 border-brand-cyan text-red-500">Fricção atual</th>
+                            <th class="py-4 px-6 font-bold border-b-2 border-brand-cyan rounded-tr-lg">Duração</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50 transition-colors group">
+                            <td class="py-4 px-6 font-bold text-brand-dark"><span class="bg-gray-200 text-gray-700 rounded-full w-6 h-6 inline-flex items-center justify-center mr-2 text-xs">1</span>Gatilho</td>
+                            <td class="py-4 px-6 italic text-gray-600">"Preciso trocar a roupa de cama"</td>
+                            <td class="py-4 px-6 font-medium">Shopee/ML</td>
+                            <td class="py-4 px-6 text-brand-cyan font-medium group-hover:bg-[#e6f9fc] transition-colors">Estar listado com o termo de busca certo</td>
+                            <td class="py-4 px-6 text-red-500 group-hover:bg-red-50 transition-colors">Catálogo online baixo</td>
+                            <td class="py-4 px-6 text-gray-500">Imediato</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 transition-colors group">
+                            <td class="py-4 px-6 font-bold text-brand-dark"><span class="bg-gray-200 text-gray-700 rounded-full w-6 h-6 inline-flex items-center justify-center mr-2 text-xs">2</span>Pesquisa</td>
+                            <td class="py-4 px-6 italic text-gray-600">Comparando 10 anúncios</td>
+                            <td class="py-4 px-6 font-medium">Pesquisa Google Shop</td>
+                            <td class="py-4 px-6 text-brand-cyan font-medium group-hover:bg-[#e6f9fc] transition-colors">Título com fios + tamanho + composição;</td>
+                            <td class="py-4 px-6 text-red-500 group-hover:bg-red-50 transition-colors">Nenhum SKUs de 400 fios que é o termo mais buscado</td>
+                            <td class="py-4 px-6 text-gray-500">10 min – 3 dias</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 transition-colors group">
+                            <td class="py-4 px-6 font-bold text-brand-dark"><span class="bg-gray-200 text-gray-700 rounded-full w-6 h-6 inline-flex items-center justify-center mr-2 text-xs">3</span>Consideração</td>
+                            <td class="py-4 px-6 italic text-gray-600">"Esse é confiável?"</td>
+                            <td class="py-4 px-6 font-medium">Página de produto, avaliações</td>
+                            <td class="py-4 px-6 text-brand-cyan font-medium group-hover:bg-[#e6f9fc] transition-colors">Selo ABR, origem Minas, prova de composição</td>
+                            <td class="py-4 px-6 text-red-500 group-hover:bg-red-50 transition-colors text-center">-</td>
+                            <td class="py-4 px-6 text-gray-500">5 min – 1 semana</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 transition-colors group">
+                            <td class="py-4 px-6 font-bold text-brand-dark"><span class="bg-gray-200 text-gray-700 rounded-full w-6 h-6 inline-flex items-center justify-center mr-2 text-xs">4</span>Decisão</td>
+                            <td class="py-4 px-6 italic text-gray-600">Checando frete e prazo</td>
+                            <td class="py-4 px-6 font-medium">Checkout</td>
+                            <td class="py-4 px-6 text-brand-cyan font-medium group-hover:bg-[#e6f9fc] transition-colors">Frete gratis e parcelamento faciltiado</td>
+                            <td class="py-4 px-6 text-red-500 group-hover:bg-red-50 transition-colors text-center">-</td>
+                            <td class="py-4 px-6 text-gray-500">Minutos</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- SESSÃO 10 (PUV - O Mecanismo) -->
+    <section class="py-20 bg-brand-dark text-white relative">
+        <!-- Abstract Parallax BG -->
+        <div class="absolute inset-0 z-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-fixed"></div>
+
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 reveal">
+            <h2 class="text-4xl font-bold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-white to-brand-cyan">PUV - Proposta única de valor</h2>
+            
+            <div class="bg-gradient-to-br from-[#00C8E2] to-[#1B3859] p-[2px] rounded-2xl mb-12 shadow-2xl transform hover:scale-[1.01] transition-transform duration-500">
+                <div class="bg-gray-900 rounded-2xl p-8 md:p-12 text-center">
+                    <p class="text-brand-cyan font-bold tracking-widest uppercase mb-4 text-sm">Novo Território Recomendado</p>
+                    <h3 class="text-3xl md:text-5xl font-extrabold text-white mb-6">Algodão · Autoral · Edição Final</h3>
+                    <p class="text-xl md:text-2xl text-gray-300 italic max-w-3xl mx-auto leading-relaxed">
+                        "Algodão de verdade em estampas autorais. Lotes novos liberados todo mês, em Edição Final sem reposição."
+                    </p>
+                </div>
+            </div>
+
+            <!-- Pilares -->
+            <div class="grid md:grid-cols-2 gap-8 mb-16">
+                <div class="bg-gray-800 p-8 rounded-xl border-t-4 border-brand-cyan">
+                    <h4 class="text-2xl font-bold mb-4 text-white">Edição Final</h4>
+                    <p class="text-gray-300 mb-4"><strong class="text-brand-cyan">Atributo Funcional:</strong> Quantidade limitada por estampa, sem produção de novos lotes.</p>
+                    <p class="text-gray-300 mb-4"><strong class="text-brand-cyan">Impacto Emocional:</strong> "Preciso garantir a minha antes que acabe."</p>
+                    <p class="text-gray-300"><strong class="text-brand-cyan">Solução Estratégica da Restrição:</strong> Substitui a palavra outlet por escassez real. Justifica a oportunidade sem desvalorizar a peça.</p>
+                </div>
+                <div class="bg-gray-800 p-8 rounded-xl border-t-4 border-brand-cyan">
+                    <h4 class="text-2xl font-bold mb-4 text-white">Giro Mensal</h4>
+                    <p class="text-gray-300 mb-4"><strong class="text-brand-cyan">Atributo Funcional:</strong> Liberação contínua de novas estampas no acervo a cada mês.</p>
+                    <p class="text-gray-300 mb-4"><strong class="text-brand-cyan">Impacto Emocional:</strong> "Quero ver o que chegou de novo este mês."</p>
+                    <p class="text-gray-300"><strong class="text-brand-cyan">Solução Estratégica da Restrição:</strong> Transforma o estoque antigo em novidade recorrente, incentivando a cliente a voltar sempre.</p>
+                </div>
+            </div>
+
+            <!-- O Mecanismo -->
+            <h3 class="text-3xl font-bold text-center mb-8">O Mecanismo</h3>
+            <div class="overflow-x-auto rounded-xl shadow-xl">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr>
+                            <th class="py-4 px-6 bg-gray-900 text-gray-400 font-semibold uppercase text-sm border-b border-gray-700">Dimensão</th>
+                            <th class="py-4 px-6 bg-red-900 bg-opacity-20 text-red-400 font-semibold uppercase text-sm border-b border-gray-700 text-center">Percepção de "Outlet"</th>
+                            <th class="py-4 px-6 bg-green-900 bg-opacity-20 text-green-400 font-semibold uppercase text-sm border-b border-gray-700 text-center">Percepção de "Edição Final + Lançamento Mensal"</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-700 bg-gray-800">
+                        <tr>
+                            <td class="py-4 px-6 font-medium text-white">Mensagem Central</td>
+                            <td class="py-4 px-6 text-center text-gray-400">"Sobrou e está encalhado."</td>
+                            <td class="py-4 px-6 text-center text-white font-bold bg-green-900 bg-opacity-10">"Lote exclusivo do mês com tiragem limitada."</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-6 font-medium text-white">Valor Percebido</td>
+                            <td class="py-4 px-6 text-center text-red-400">Desvaloriza o produto.</td>
+                            <td class="py-4 px-6 text-center text-green-400 font-bold bg-green-900 bg-opacity-10">Eleva a percepção de oportunidade e exclusividade.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-6 font-medium text-white">Urgência de Compra</td>
+                            <td class="py-4 px-6 text-center text-gray-400">Baixa</td>
+                            <td class="py-4 px-6 text-center text-green-400 font-bold bg-green-900 bg-opacity-10">Alta</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-6 font-medium text-white">Frequência de Visita</td>
+                            <td class="py-4 px-6 text-center text-gray-400">Ocorre apenas em busca esporádica.</td>
+                            <td class="py-4 px-6 text-center text-white font-bold bg-green-900 bg-opacity-10">Alta, a cliente volta todo mês para conferir as novidades</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SESSÃO 11: DICIONÁRIO DE COMUNICAÇÃO -->
+    <section class="py-20 bg-gray-50 relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 reveal">
+            <h2 class="text-4xl font-bold text-brand-dark mb-12 text-center">Dicionário de Comunicação</h2>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-16">
+                <!-- NUNCA USAR -->
+                <div class="bg-white rounded-2xl shadow-lg border border-red-200 overflow-hidden">
+                    <div class="bg-red-50 p-4 border-b border-red-100 flex items-center justify-center">
+                        <span class="text-xl mr-2">❌</span>
+                        <h3 class="text-lg font-bold text-red-700 uppercase">O que NUNCA usar</h3>
+                    </div>
+                    <ul class="p-6 space-y-4 text-gray-600 font-medium">
+                        <li class="line-through decoration-red-400">outlet · ponta de estoque · ponta de fábrica</li>
+                        <li class="line-through decoration-red-400">saldão · queima de estoque · liquidação</li>
+                        <li class="line-through decoration-red-400">fora de linha · coleção passada · segunda linha</li>
+                        <li class="line-through decoration-red-400">preço de fábrica · direto da fábrica</li>
+                        <li class="line-through decoration-red-400">Estamparia S.A. · Menção a marcas institucionais</li>
+                    </ul>
+                </div>
+
+                <!-- USAR -->
+                <div class="bg-white rounded-2xl shadow-lg border border-green-200 overflow-hidden">
+                    <div class="bg-green-50 p-4 border-b border-green-100 flex items-center justify-center">
+                        <span class="text-xl mr-2">✅</span>
+                        <h3 class="text-lg font-bold text-green-700 uppercase">O que USAR em todos os canais</h3>
+                    </div>
+                    <ul class="p-6 space-y-4 text-gray-800 font-bold">
+                        <li class="flex items-center"><svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Edição Final · Lote do Mês</li>
+                        <li class="flex items-center"><svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Edição Limitada · Últimas peças desta estampa</li>
+                        <li class="flex items-center"><svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Estampa única · Lote sem reposição de estoque</li>
+                        <li class="flex items-center"><svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Preço justo · Oportunidade de lote final</li>
+                        <li class="flex items-center"><svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Lojas Encanto ·</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Guia Prático -->
+            <h3 class="text-2xl font-bold text-brand-dark mb-6 border-l-4 border-brand-cyan pl-4">Guia Prático de Aplicação de Copywriting por Canal</h3>
+            <div class="grid gap-6">
+                <!-- Instagram -->
+                <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-pink-500 hover:-translate-y-1 transition-transform">
+                    <h4 class="font-bold text-gray-800 mb-2 uppercase text-sm tracking-wider">Bio do Instagram</h4>
+                    <p class="text-gray-600 font-mono text-sm bg-gray-50 p-4 rounded whitespace-pre-line">Roupa de cama 100% Algodão Brasileiro 🌿
+                    Novas estampas liberadas todo mês.
+                    Edição Final · Peças limitadas sem reposição.
+                    Garanta a sua no site 👇</p>
+                </div>
+                <!-- E-commerce -->
+                <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-blue-500 hover:-translate-y-1 transition-transform">
+                    <h4 class="font-bold text-gray-800 mb-2 uppercase text-sm tracking-wider">E-commerce Próprio (Home)</h4>
+                    <div class="bg-gray-50 p-4 rounded text-sm">
+                        <p class="mb-2"><strong class="text-gray-700">Headline:</strong> <span class="text-gray-600 font-mono">100% Algodão de verdade com novas estampas liberadas todo mês.</span></p>
+                        <p><strong class="text-gray-700">Sub-headline:</strong> <span class="text-gray-600 font-mono">Aproveite o lote atual. A Edição Final de cada peça é única e sem reposição de estoque.</span></p>
+                    </div>
+                </div>
+                <!-- Produto -->
+                <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-yellow-500 hover:-translate-y-1 transition-transform">
+                    <h4 class="font-bold text-gray-800 mb-2 uppercase text-sm tracking-wider">Página de Produto</h4>
+                    <div class="bg-gray-50 p-4 rounded text-sm">
+                        <p class="mb-2"><strong class="text-gray-700">Selo na Imagem:</strong> <span class="inline-block bg-black text-white px-2 py-1 text-xs font-bold uppercase tracking-widest mt-1">Edição Final · Sem Reposição</span></p>
+                        <p><strong class="text-gray-700">Descrição:</strong> <span class="text-gray-600 font-mono">Toque macio, conforto térmico e a durabilidade do algodão certificado ABR. Esta estampa pertence à nossa Edição Final: garantimos a qualidade original, mas o estoque é limitado às peças deste lote. Acabou, não volta.</span></p>
+                    </div>
+                </div>
+                <!-- ML e Shopee -->
+                <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-orange-500 hover:-translate-y-1 transition-transform">
+                    <h4 class="font-bold text-gray-800 mb-2 uppercase text-sm tracking-wider">ML e Shopee</h4>
+                    <div class="bg-gray-50 p-4 rounded text-sm">
+                        <p class="mb-2"><strong class="text-gray-700">Título do Anúncio:</strong> <span class="text-gray-600 font-mono">Jogo de Cama [Tamanho] 100% Algodão [Contagem] Fios Encanto – Estampa [Nome] (Edição Final)</span></p>
+                        <p><strong class="text-gray-700">Foco:</strong> <span class="text-gray-600 font-mono">Preenchimento completo da ficha técnica detalhando medidas, composição pura e gramatura.</span></p>
+                    </div>
+                </div>
+                <!-- Google Ads -->
+                <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-brand-cyan hover:-translate-y-1 transition-transform">
+                    <h4 class="font-bold text-gray-800 mb-2 uppercase text-sm tracking-wider">Google Ads (Busca)</h4>
+                    <div class="bg-gray-50 p-4 rounded text-sm">
+                        <p class="mb-2"><strong class="text-gray-700">Palavras-chave:</strong> <span class="text-gray-600 font-mono">jogo de cama 100% algodao, jogo de lençol percal casal, jogo de cama queen algodão</span></p>
+                        <p><strong class="text-gray-700">Anúncio:</strong> <span class="text-gray-600 font-mono">*Jogo de Cama 100% Algodão</span></p>
+                    </div>
+                </div>
+                <!-- WhatsApp -->
+                <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-green-500 hover:-translate-y-1 transition-transform">
+                    <h4 class="font-bold text-gray-800 mb-2 uppercase text-sm tracking-wider">WhatsApp / E-mail (CRM)</h4>
+                    <div class="bg-gray-50 p-4 rounded text-sm">
+                        <p><strong class="text-gray-700">Chamada de Lançamento:</strong> <span class="text-gray-600 font-mono italic">"Liberamos as novas estampas do mês ! São peças limitadas em 100% algodão de verdade. Quem está no grupo garante primeiro antes que esgoste."</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SESSÃO 12: COMO COMUNICAR O POSICIONAMENTO -->
+    <section class="py-20 bg-white relative">
+        <div class="max-w-4xl mx-auto px-6 lg:px-12 text-center reveal">
+            <h2 class="text-4xl font-bold text-brand-dark mb-6">Definição de como comunicar o posicionamento</h2>
+            <p class="text-xl text-gray-600 mb-10">A ideia de <em>"Novas estampas todo mês com peças limitadas"</em></p>
+            
+            <div class="bg-gray-50 p-8 rounded-2xl shadow-inner text-left mb-10">
+                <h3 class="text-lg font-bold text-gray-400 uppercase tracking-widest mb-6">Exemplos:</h3>
+                <ul class="space-y-6">
+                    <li class="flex items-start">
+                        <span class="text-brand-cyan mr-3 text-2xl font-bold">"</span>
+                        <p class="text-xl font-medium text-gray-800 italic mt-1">Novas estampas liberadas todo mês. Edição Final com peças limitadas.</p>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-brand-cyan mr-3 text-2xl font-bold">"</span>
+                        <p class="text-xl font-medium text-gray-800 italic mt-1">Estampas novas no acervo todo mês. Acabou, não volta.</p>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-brand-cyan mr-3 text-2xl font-bold">"</span>
+                        <p class="text-xl font-medium text-gray-800 italic mt-1">Lançamentos mensais de estampas exclusivas em 100% algodão. Garanta a sua antes que esgote.</p>
+                    </li>
+                </ul>
+            </div>
+            
+            <p class="text-lg text-gray-700 max-w-2xl mx-auto leading-relaxed border-l-4 border-brand-cyan pl-6 text-left">
+                Conecta a novidade mensal direto ao conceito de Edição Final. A cliente entende que o catálogo sempre tem novidades, mas que cada estampa dura pouco tempo e exige decisão rápida.
+            </p>
+        </div>
+    </section>
+
+    <!-- SESSÃO 13: CONCLUSÃO E PRÓXIMOS PASSOS -->
+    <section class="py-20 bg-brand-dark text-white relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 grid md:grid-cols-2 gap-12 reveal">
+            
+            <!-- O que aconteceu -->
+            <div>
+                <h2 class="text-3xl font-bold text-brand-cyan mb-8 uppercase tracking-wide flex items-center">
+                    <svg class="w-8 h-8 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    O QUE ACONTECEU ESSA SEMANA
+                </h2>
+                <ul class="space-y-4 text-gray-300 text-lg">
+                    <li class="flex items-start">
+                        <span class="text-brand-cyan mr-3 mt-1">✓</span>
+                        <span>Entendemos de forma mais aprofundada o seu mercado, concorrentes e o seu público.</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-brand-cyan mr-3 mt-1">✓</span>
+                        <span>Comparamos a sua solução com a de seus concorrentes, conseguindo uma visão clara de como cada player está no mercado.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Próximos Passos -->
+            <div class="bg-white bg-opacity-5 p-8 rounded-2xl border border-gray-700 backdrop-blur-sm">
+                <h2 class="text-3xl font-bold text-white mb-8 uppercase tracking-wide flex items-center">
+                    <svg class="w-8 h-8 mr-3 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    PRÓXIMOS PASSOS:
+                </h2>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-300 font-medium">
+                    <li class="flex items-center bg-gray-900 bg-opacity-50 p-3 rounded"><span class="w-2 h-2 bg-yellow-400 rounded-full mr-3"></span>Revisão das campanhas</li>
+                    <li class="flex items-center bg-gray-900 bg-opacity-50 p-3 rounded"><span class="w-2 h-2 bg-yellow-400 rounded-full mr-3"></span>Revisão das ferramentas</li>
+                    <li class="flex items-center bg-gray-900 bg-opacity-50 p-3 rounded"><span class="w-2 h-2 bg-yellow-400 rounded-full mr-3"></span>Análise dos seus criativos de redes</li>
+                    <li class="flex items-center bg-gray-900 bg-opacity-50 p-3 rounded"><span class="w-2 h-2 bg-yellow-400 rounded-full mr-3"></span>Análise dos seus concorrentes</li>
+                    <li class="flex items-center bg-gray-900 bg-opacity-50 p-3 rounded"><span class="w-2 h-2 bg-yellow-400 rounded-full mr-3"></span>Estudo de performance</li>
+                    <li class="flex items-center bg-gray-900 bg-opacity-50 p-3 rounded"><span class="w-2 h-2 bg-yellow-400 rounded-full mr-3"></span>Diagnóstico de Copy</li>
+                </ul>
+                
+                <div class="mt-8 text-center">
+                    <button class="btn-shine bg-brand-cyan text-brand-dark font-bold text-lg py-4 px-8 rounded-full shadow-lg hover:shadow-cyan-500/50 transform hover:-translate-y-1 transition-all">
+                        Aprovar Etapa
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- RODAPÉ -->
+    <footer class="bg-brand-red text-white py-12 border-t-8 border-brand-dark">
+        <div class="max-w-7xl mx-auto px-6 text-center flex flex-col items-center justify-center">
+            <p class="text-sm font-semibold tracking-widest uppercase mb-4 opacity-80">Produzido por:</p>
+            <img src="https://imgur.com/SU08Zb0.png" alt="V4 Silva Anchieta & Co" class="h-16 filter drop-shadow-lg transform transition hover:scale-105">
+        </div>
+    </footer>
+
+    <!-- LIGHTBOX MODAL (Oculto por padrão) -->
+    <div id="lightbox" class="fixed inset-0 z-[100] bg-black bg-opacity-90 hidden flex items-center justify-center opacity-0 transition-opacity duration-300">
+        <button id="close-lightbox" class="absolute top-6 right-6 text-white hover:text-brand-cyan transition-colors">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+        <img id="lightbox-img" src="" alt="Imagem Ampliada" class="max-w-[90%] max-h-[90vh] object-contain rounded shadow-2xl transform scale-95 transition-transform duration-300">
+    </div>
+
+    <!-- SCRIPTS INTERATIVOS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Sticky Header Glassmorphism Effect
+            const header = document.getElementById('main-header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // 2. Scroll Reveal Animations (Intersection Observer)
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target); // Anima apenas uma vez
+                    }
+                });
+            }, {
+                root: null,
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            });
+            revealElements.forEach(el => revealObserver.observe(el));
+
+            // 3. Lightbox Logic
+            const lightboxTriggers = document.querySelectorAll('.lightbox-trigger img');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const closeBtn = document.getElementById('close-lightbox');
+
+            const openLightbox = (src) => {
+                lightboxImg.src = src;
+                lightbox.classList.remove('hidden');
+                // Pequeno delay para a transição de opacidade/escala funcionar
+                setTimeout(() => {
+                    lightbox.classList.remove('opacity-0');
+                    lightboxImg.classList.remove('scale-95');
+                    lightboxImg.classList.add('scale-100');
+                }, 10);
+            };
+
+            const closeLightbox = () => {
+                lightbox.classList.add('opacity-0');
+                lightboxImg.classList.remove('scale-100');
+                lightboxImg.classList.add('scale-95');
+                setTimeout(() => {
+                    lightbox.classList.add('hidden');
+                    lightboxImg.src = '';
+                }, 300);
+            };
+
+            lightboxTriggers.forEach(img => {
+                img.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openLightbox(img.src);
+                });
+            });
+
+            closeBtn.addEventListener('click', closeLightbox);
+            lightbox.addEventListener('click', (e) => {
+                if(e.target === lightbox) closeLightbox();
+            });
+            document.addEventListener('keydown', (e) => {
+                if(e.key === 'Escape' && !lightbox.classList.contains('hidden')) closeLightbox();
+            });
+
+            // 4. Line Clamp Toggle (Ver mais)
+            const toggleBtns = document.querySelectorAll('.toggle-clamp');
+            toggleBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const box = this.previousElementSibling.querySelector('.line-clamp-box');
+                    if (box.classList.contains('expanded')) {
+                        box.classList.remove('expanded');
+                        this.innerText = 'Ver mais';
+                    } else {
+                        box.classList.add('expanded');
+                        this.innerText = 'Ver menos';
+                    }
+                });
+            });
+
+            // 5. Drag to scroll functionality for Tables
+            const sliders = document.querySelectorAll('.overflow-x-auto.cursor-grab');
+            sliders.forEach(slider => {
+                let isDown = false;
+                let startX;
+                let scrollLeft;
+
+                slider.addEventListener('mousedown', (e) => {
+                    isDown = true;
+                    slider.classList.add('active');
+                    startX = e.pageX - slider.offsetLeft;
+                    scrollLeft = slider.scrollLeft;
+                });
+                slider.addEventListener('mouseleave', () => {
+                    isDown = false;
+                    slider.classList.remove('active');
+                });
+                slider.addEventListener('mouseup', () => {
+                    isDown = false;
+                    slider.classList.remove('active');
+                });
+                slider.addEventListener('mousemove', (e) => {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.pageX - slider.offsetLeft;
+                    const walk = (x - startX) * 2; // Velocidade do arraste
+                    slider.scrollLeft = scrollLeft - walk;
+                });
+            });
+        });
+    </script>
+</body>
+</html>
